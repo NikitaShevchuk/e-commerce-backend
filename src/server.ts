@@ -1,25 +1,26 @@
 import bodyParser from "body-parser";
 import cors from "cors";
 import express, { Application } from "express";
+import adminRoute from "./routes/admin";
+import { paths } from "./routes/paths";
+import { connectToDatabase } from "./utils/db";
 
 export class ExpressServer {
     private app: Application;
     private readonly port: number;
     private paths: {
         default: string;
+        admin: string;
+        product: string;
     };
-    private readonly databaseLink: string;
 
     constructor() {
         this.app = express();
         this.port = (process.env.PORT as unknown as number) || 5000;
-        this.paths = {
-            default: ""
-        };
+        this.paths = paths;
         this.middleware();
         this.routes();
-        this.databaseLink = process.env.DATABASE_CONNECTION_LINK as string;
-        // this.connectToDatabase();
+        connectToDatabase(process.env.DATABASE_CONNECTION_LINK as string);
     }
 
     middleware() {
@@ -27,7 +28,10 @@ export class ExpressServer {
         this.app.use(cors());
     }
     routes() {
-        this.app.use(this.paths.default, () => {});
+        this.app.get(this.paths.default, (_, response) => {
+            response.send("The server is up and running!");
+        });
+        this.app.use(this.paths.admin, adminRoute);
     }
 
     listen() {
