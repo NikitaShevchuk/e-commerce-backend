@@ -1,14 +1,14 @@
 import bodyParser from "body-parser";
 import cors from "cors";
-import express, { Application } from "express";
+import express, { type Application } from "express";
 import adminRoute from "./routes/admin";
 import { paths } from "./routes/paths";
 import { connectToDatabase } from "./utils/db";
 
 export class ExpressServer {
-    private app: Application;
+    private readonly app: Application;
     private readonly port: number;
-    private paths: {
+    private readonly paths: {
         default: string;
         admin: string;
         product: string;
@@ -27,6 +27,7 @@ export class ExpressServer {
         this.app.use(bodyParser.json());
         this.app.use(cors());
     }
+
     routes() {
         this.app.get(this.paths.default, (_, response) => {
             response.send("The server is up and running!");

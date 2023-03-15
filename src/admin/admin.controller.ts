@@ -1,4 +1,4 @@
-import express from "express";
+import type express from "express";
 
 class AdminProductsController {
     async create(request: express.Request, response: express.Response) {}
