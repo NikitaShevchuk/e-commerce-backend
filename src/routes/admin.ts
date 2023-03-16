@@ -1,5 +1,5 @@
 import express from "express";
-import AdminProductsController from "../admin/admin.controller";
+import AdminProductsController from "../admin/admin-product.controller";
 
 const adminRoute = express.Router();
 

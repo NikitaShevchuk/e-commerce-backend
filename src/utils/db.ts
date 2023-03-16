@@ -1,11 +1,7 @@
 import mongoose from "mongoose";
 
-export const connectToDatabase = async (databaseLink: string) => {
-    try {
-        mongoose.set("strictQuery", true);
-        await mongoose.connect(databaseLink);
-        console.log("[server]: Connected to database");
-    } catch (error) {
-        console.log(`[server]: Database errors: ${error || "0 errors"}`);
-    }
+export const connectToDatabase = async (databaseLink: string): Promise<void> => {
+    mongoose.set("strictQuery", true);
+    await mongoose.connect(databaseLink);
+    console.log("[server]: Connected to database");
 };

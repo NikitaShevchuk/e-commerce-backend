@@ -5,6 +5,8 @@ import adminRoute from "./routes/admin";
 import { paths } from "./routes/paths";
 import { connectToDatabase } from "./utils/db";
 
+const port = process.env.PORT;
+
 export class ExpressServer {
     private readonly app: Application;
     private readonly port: number;
@@ -15,27 +17,27 @@ export class ExpressServer {
     };
 
     constructor() {
+        void connectToDatabase(process.env.DATABASE_CONNECTION_LINK as string);
         this.app = express();
-        this.port = (process.env.PORT as unknown as number) || 5000;
+        this.port = port != null && port.length > 0 && !Number.isNaN(port) ? Number(port) : 5000;
         this.paths = paths;
         this.middleware();
         this.routes();
-        connectToDatabase(process.env.DATABASE_CONNECTION_LINK as string);
     }
 
-    middleware() {
+    middleware(): void {
         this.app.use(bodyParser.json());
         this.app.use(cors());
     }
 
-    routes() {
+    routes(): void {
         this.app.get(this.paths.default, (_, response) => {
             response.send("The server is up and running!");
         });
         this.app.use(this.paths.admin, adminRoute);
     }
 
-    listen() {
+    listen(): void {
         this.app.listen(this.port, () => {
             console.log(`[server]: Server is running at https://localhost:${this.port}`);
         });

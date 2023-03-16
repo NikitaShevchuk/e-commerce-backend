@@ -28,7 +28,7 @@ const ProductSchema = new mongoose.Schema(
             type: Boolean,
             required: true
         },
-        isNew: {
+        productIsNew: {
             type: Boolean,
             required: true
         }
@@ -37,4 +37,4 @@ const ProductSchema = new mongoose.Schema(
 );
 
 export default mongoose.model("ProductSchema", ProductSchema);
-export type ProductSchemaType = typeof ProductSchema;
+export type ProductType = typeof ProductSchema;
