@@ -20,5 +20,7 @@
     "plugins": [
         "prettier"
     ],
-    "rules": {}
+    "rules": {
+        "@typescript-eslint/no-misused-promises": "off"
+    }
 }

@@ -7,5 +7,6 @@ adminRoute.get("/product", AdminProductsController.getAll);
 adminRoute.get("/product/:id", AdminProductsController.getById);
 adminRoute.post("/product", AdminProductsController.create);
 adminRoute.patch("/product/:id", AdminProductsController.update);
+adminRoute.delete("/product/:id", AdminProductsController.delete);
 
 export default adminRoute;

@@ -1,11 +1,23 @@
 import * as mongoose from "mongoose";
 
-const ProductSchema = new mongoose.Schema(
+export interface IProduct extends Document {
+    title: string;
+    price: number;
+    description: string;
+    sizes: string[];
+    isFavorite: boolean;
+    productIsNew: boolean;
+    image: string;
+    color: string;
+}
+
+const ProductSchema = new mongoose.Schema<IProduct, mongoose.Model<IProduct>, IProduct>(
     {
         title: {
             type: String,
             required: true,
-            maxLength: 100
+            maxLength: 100,
+            minlength: 3
         },
         price: {
             type: Number,
@@ -31,10 +43,20 @@ const ProductSchema = new mongoose.Schema(
         productIsNew: {
             type: Boolean,
             required: true
+        },
+        image: {
+            type: String,
+            required: true
+        },
+        color: {
+            type: String,
+            required: true,
+            maxLength: 50,
+            minlength: 3
         }
     },
     { collection: "Products" }
 );
 
 export default mongoose.model("ProductSchema", ProductSchema);
-export type ProductType = typeof ProductSchema;
+export type ProductSchemaType = typeof ProductSchema;
