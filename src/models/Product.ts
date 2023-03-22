@@ -1,6 +1,7 @@
 import * as mongoose from "mongoose";
 
 export interface IProduct extends Document {
+    _id: number;
     title: string;
     price: number;
     description: string;
@@ -9,6 +10,7 @@ export interface IProduct extends Document {
     productIsNew: boolean;
     image: string;
     color: string;
+    userId: mongoose.Types.ObjectId | undefined;
 }
 
 const ProductSchema = new mongoose.Schema<IProduct, mongoose.Model<IProduct>, IProduct>(
@@ -53,10 +55,15 @@ const ProductSchema = new mongoose.Schema<IProduct, mongoose.Model<IProduct>, IP
             required: true,
             maxLength: 50,
             minlength: 3
+        },
+        userId: {
+            type: mongoose.Types.ObjectId,
+            ref: "User",
+            required: true
         }
     },
     { collection: "Products" }
 );
 
-export default mongoose.model("ProductSchema", ProductSchema);
+export default mongoose.model("Product", ProductSchema);
 export type ProductSchemaType = typeof ProductSchema;

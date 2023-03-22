@@ -1,5 +1,6 @@
 import type { IProduct } from "../models/Product";
 import Product from "../models/Product";
+import User from "../models/User";
 
 class AdminProductsRepository {
     async create(newProduct: IProduct): Promise<IProduct> {
@@ -9,7 +10,7 @@ class AdminProductsRepository {
     }
 
     async getAll(): Promise<IProduct[]> {
-        return await Product.find();
+        return await Product.find().populate("userId", ["name", "email", "role"], User);
     }
 
     async getByName(name: string): Promise<IProduct | null> {

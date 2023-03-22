@@ -1,20 +1,68 @@
-import * as mongoose from "mongoose";
+import { createAddToCartMethod } from "./methods/user";
+import { type Model, Types, Schema, model } from "mongoose";
 
-export interface IUser extends Document {
-    title: string;
+export interface ICart {
+    items: Array<{
+        productId: Types.ObjectId;
+        quantity: number;
+    }>;
 }
 
-const UserSchema = new mongoose.Schema<IUser, mongoose.Model<IUser>, IUser>(
+export interface IUser {
+    name: string;
+    email: string;
+    cart: ICart;
+    role: UserRoles;
+}
+
+export interface IUserMethods extends IUser {
+    addToCart: (newCartItemId: string) => ICart;
+}
+
+interface UserModel extends Model<IUser, unknown, IUserMethods> {}
+
+export type UserRoles = "admin" | "seller" | "client";
+
+export const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
     {
-        title: {
+        name: {
             type: String,
             required: true,
             maxLength: 100,
             minlength: 3
+        },
+        email: {
+            type: String,
+            required: true,
+            maxLength: 100,
+            minlength: 3
+        },
+        cart: {
+            items: [
+                {
+                    productId: {
+                        type: Types.ObjectId,
+                        ref: "Product",
+                        required: true
+                    },
+                    quantity: {
+                        type: Number,
+                        required: true
+                    }
+                }
+            ]
+        },
+        role: {
+            type: String,
+            enum: ["admin", "seller", "client"],
+            required: true
         }
     },
     { collection: "Users" }
 );
 
-export default mongoose.model("UserSchema", UserSchema);
+// create new methods for User Schema
+createAddToCartMethod();
+
+export default model<IUser, UserModel>("User", UserSchema);
 export type UserSchemaType = typeof UserSchema;
