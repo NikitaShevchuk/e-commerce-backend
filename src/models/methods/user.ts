@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 import { UserSchema } from "../User";
 
 export const createAddToCartMethod = (): void => {
-    UserSchema.methods.addToCart = function (newCartItemId: string) {
+    UserSchema.methods.addToCart = async function (newCartItemId: string) {
         const cartProductIndex = this.cart.items.findIndex((cartProduct) => {
-            return String(cartProduct.productId) === String(newCartItemId);
+            return String(cartProduct.product) === String(newCartItemId);
         });
 
         const updatedCartItems = [...this.cart.items];
@@ -14,14 +14,20 @@ export const createAddToCartMethod = (): void => {
             updatedCartItems[cartProductIndex].quantity = newQuantity;
         } else {
             const newCartItem = {
-                productId: new mongoose.Types.ObjectId(newCartItemId),
+                product: new mongoose.Types.ObjectId(newCartItemId),
                 quantity: 1
             };
             updatedCartItems.push(newCartItem);
         }
 
         this.cart = { items: updatedCartItems };
-        this.save();
-        return this.cart;
+        await this.save();
+    };
+};
+
+export const createRemoveFromCartMethod = (): void => {
+    UserSchema.methods.removeOne = async function (productId: string) {
+        this.cart.items = this.cart.items.filter(({ product }) => String(product) !== productId);
+        await this.save();
     };
 };

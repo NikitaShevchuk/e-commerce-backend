@@ -9,6 +9,10 @@ class CartService {
     async addCartItem(newCartProductId: string): Promise<ICart | null> {
         return await CartRepository.addCartItem(newCartProductId);
     }
+
+    async removeOne(productId: string): Promise<ICart | null> {
+        return await CartRepository.removeOne(productId);
+    }
 }
 
 export default new CartService();

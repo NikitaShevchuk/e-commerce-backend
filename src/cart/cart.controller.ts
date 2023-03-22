@@ -24,6 +24,24 @@ class CartController {
 
         response.status(200).json(updatedCart);
     }
+
+    async removeOne(request: Request, response: Response): Promise<void> {
+        const productId = request.params.productId;
+
+        if (productId.length === 0) {
+            response.status(404).json({ message: "Product id is required!" });
+            return;
+        }
+
+        const updatedCart = await CartService.removeOne(productId);
+
+        if (updatedCart === null) {
+            response.status(404).json({ message: `Product with id "${productId}" is not found!` });
+            return;
+        }
+
+        response.status(200).json(updatedCart);
+    }
 }
 
 export default new CartController();
