@@ -1,4 +1,8 @@
-import { createAddToCartMethod, createRemoveFromCartMethod } from "./methods/user";
+import {
+    createAddToCartMethod,
+    createClearCartMethod,
+    createRemoveFromCartMethod
+} from "./methods/user";
 import { type Model, Types, Schema, model } from "mongoose";
 
 export interface ICart {
@@ -18,9 +22,10 @@ export interface IUser {
 export interface IUserMethods extends IUser {
     addToCart: (newCartItemId: string) => Promise<void>;
     removeOne: (productId: string) => Promise<void>;
+    clearCart: () => Promise<void>;
 }
 
-interface UserModel extends Model<IUser, unknown, IUserMethods> {}
+export interface UserModel extends Model<IUser, unknown, IUserMethods> {}
 
 export type UserRoles = "admin" | "seller" | "client";
 
@@ -65,6 +70,7 @@ export const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
 // create new methods for User Schema
 createAddToCartMethod();
 createRemoveFromCartMethod();
+createClearCartMethod();
 
 export default model<IUser, UserModel>("User", UserSchema);
 export type UserSchemaType = typeof UserSchema;

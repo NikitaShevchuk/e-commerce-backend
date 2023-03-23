@@ -31,3 +31,10 @@ export const createRemoveFromCartMethod = (): void => {
         await this.save();
     };
 };
+
+export const createClearCartMethod = (): void => {
+    UserSchema.methods.clearCart = async function () {
+        this.cart = { items: [] };
+        await this.save();
+    };
+};
