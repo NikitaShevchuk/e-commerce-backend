@@ -1,12 +1,19 @@
 import { ProductSchema, type IProduct } from "./Product";
 import { type Model, Types, Schema, model } from "mongoose";
 
+export enum OrderStatus {
+    uncompleted = "uncompleted",
+    processing = "processing",
+    completed = "completed"
+}
+
 export interface IOrder extends Document {
     products: Array<{
         product: IProduct | null;
         quantity: number;
     }>;
     user: typeof Types.ObjectId;
+    status: OrderStatus;
 }
 
 export interface IOrderMethods extends IOrder {}
@@ -25,6 +32,11 @@ export const OrderSchema = new Schema<IOrder, OrderModel, IOrderMethods>(
             type: Types.ObjectId,
             required: true,
             ref: "User"
+        },
+        status: {
+            type: String,
+            required: true,
+            enum: [OrderStatus.uncompleted, OrderStatus.processing, OrderStatus.completed]
         }
     },
     { collection: "Orders" }

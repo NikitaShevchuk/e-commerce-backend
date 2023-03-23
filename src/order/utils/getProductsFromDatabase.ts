@@ -1,40 +1,20 @@
+import { type ICart, type IUser } from "./../../models/User";
 import { type HydratedDocument } from "mongoose";
-import Product, { type IProduct } from "../../models/Product";
-
-interface NewOrder {
-    product: HydratedDocument<IProduct> | null;
-    quantity: number;
-}
-
-export interface NewOrderRequestData {
-    productId: string;
-    quantity: number;
-}
+import User from "../../models/User";
+import { userId } from "../../cart/cart.repository";
 
 interface ReturnType {
-    productsFromDatabase: NewOrder[];
-    allProductsAreValid: boolean;
+    products: ICart | null;
+    user: HydratedDocument<IUser> | null;
 }
 
-export const getProductsFromDatabase = async (
-    products: NewOrderRequestData[]
-): Promise<ReturnType> => {
-    let allProductsAreValid = true;
+export const getProductsFromDatabase = async (): Promise<ReturnType> => {
+    const user = await User.findById(userId).populate("cart.items.product");
 
-    const productsFromDatabase = await Promise.all(
-        products.map(async ({ productId, quantity }) => {
-            const productInDatabase = allProductsAreValid
-                ? await Product.findById(productId)
-                : null;
-            if (productInDatabase === null || typeof quantity !== "number") {
-                allProductsAreValid = false;
-            }
-            return { product: productInDatabase, quantity };
-        })
-    );
+    const products = user?.cart != null ? user?.cart : null;
 
     return {
-        productsFromDatabase,
-        allProductsAreValid
+        products,
+        user
     };
 };

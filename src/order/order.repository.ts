@@ -1,6 +1,4 @@
-import { type NewOrderRequestData, getProductsFromDatabase } from "./utils/getProductsFromDatabase";
-import { Types } from "mongoose";
-import { userId } from "../cart/cart.repository";
+import { getProductsFromDatabase } from "./utils/getProductsFromDatabase";
 import Order, { type IOrder } from "../models/Order";
 
 class OrderRepository {
@@ -8,17 +6,20 @@ class OrderRepository {
         return await Order.find();
     }
 
-    async create(products: NewOrderRequestData[]): Promise<IOrder | null> {
-        const { productsFromDatabase, allProductsAreValid } = await getProductsFromDatabase(
-            products
-        );
-        if (!allProductsAreValid) return null;
+    async create(): Promise<IOrder | null> {
+        const { products, user } = await getProductsFromDatabase();
+        if (products === null) return null;
         const newOrder = new Order({
-            products: productsFromDatabase,
-            user: new Types.ObjectId(userId)
+            products: products.items,
+            user,
+            status: "uncompleted"
         });
         await newOrder.save();
-        return await newOrder.populate("user");
+        return newOrder;
+    }
+
+    async removeOne(orderId: string): Promise<IOrder | null> {
+        return await Order.findByIdAndRemove(orderId);
     }
 }
 

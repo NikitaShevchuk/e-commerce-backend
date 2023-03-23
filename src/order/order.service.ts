@@ -1,4 +1,3 @@
-import { type NewOrderRequestData } from "./utils/getProductsFromDatabase";
 import { type IOrder } from "../models/Order";
 import OrderRepository from "./order.repository";
 
@@ -7,8 +6,12 @@ class OrderService {
         return await OrderRepository.get();
     }
 
-    async create(products: NewOrderRequestData[]): Promise<IOrder | null> {
-        return await OrderRepository.create(products);
+    async create(): Promise<IOrder | null> {
+        return await OrderRepository.create();
+    }
+
+    async removeOne(orderId: string): Promise<IOrder | null> {
+        return await OrderRepository.removeOne(orderId);
     }
 }
 
