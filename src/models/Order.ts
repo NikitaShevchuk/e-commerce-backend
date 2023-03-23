@@ -1,8 +1,11 @@
-import { type IProduct } from "./Product";
+import { ProductSchema, type IProduct } from "./Product";
 import { type Model, Types, Schema, model } from "mongoose";
 
-export interface IOrder {
-    products: IProduct[];
+export interface IOrder extends Document {
+    products: Array<{
+        product: IProduct | null;
+        quantity: number;
+    }>;
     user: typeof Types.ObjectId;
 }
 
@@ -14,17 +17,7 @@ export const OrderSchema = new Schema<IOrder, OrderModel, IOrderMethods>(
     {
         products: [
             {
-                type: {
-                    _id: Number,
-                    title: String,
-                    price: Number,
-                    description: String,
-                    sizes: [String],
-                    isFavorite: Boolean,
-                    productIsNew: Boolean,
-                    image: String,
-                    color: String
-                },
+                type: { product: ProductSchema, quantity: Number },
                 required: true
             }
         ],

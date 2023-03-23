@@ -13,7 +13,7 @@ export interface IProduct extends Document {
     userId: mongoose.Types.ObjectId | undefined;
 }
 
-const ProductSchema = new mongoose.Schema<IProduct, mongoose.Model<IProduct>, IProduct>(
+export const ProductSchema = new mongoose.Schema<IProduct, mongoose.Model<IProduct>, IProduct>(
     {
         title: {
             type: String,

@@ -1,7 +1,7 @@
 import Product from "../models/Product";
 import User, { type ICart } from "../models/User";
 
-const userId = "641a2224e121b838322a6489";
+export const userId = "641a2224e121b838322a6489";
 
 class CartRepository {
     async get(): Promise<ICart | null> {
