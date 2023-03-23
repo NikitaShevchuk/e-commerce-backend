@@ -1,5 +1,5 @@
 import { type ICart } from "../models/User";
-import CartRepository from "./cart.repository";
+import CartRepository, { type Result } from "./cart.repository";
 
 class CartService {
     async get(): Promise<ICart | null> {
@@ -12,6 +12,10 @@ class CartService {
 
     async removeOne(productId: string): Promise<ICart | null> {
         return await CartRepository.removeOne(productId);
+    }
+
+    async removeAll(): Promise<Result> {
+        return await CartRepository.removeAll();
     }
 }
 

@@ -3,6 +3,11 @@ import User, { type ICart } from "../models/User";
 
 export const userId = "641a2224e121b838322a6489";
 
+export interface Result {
+    success: boolean;
+    errorMessage?: string;
+}
+
 class CartRepository {
     async get(): Promise<ICart | null> {
         const user = await User.findById(userId).populate("cart.items.product");
@@ -33,6 +38,14 @@ class CartRepository {
 
         if (updatedUser !== null) return updatedUser.cart;
         else return updatedUser;
+    }
+
+    async removeAll(): Promise<Result> {
+        const user = await User.findById(userId);
+        await user?.clearCart();
+
+        if (user !== null) return { success: true };
+        else return { success: false };
     }
 }
 
