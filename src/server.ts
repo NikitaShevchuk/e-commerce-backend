@@ -4,7 +4,9 @@ import { createSession } from "./session-options";
 import express, { type Application } from "express";
 import { connectToDatabase } from "./Database";
 import { setupRoutes } from "./routes/paths";
-import { port } from "./environment-variables";
+import { cookieSecret, port } from "./environment-variables";
+import cookieParser from "cookie-parser";
+import { doubleCsrfProtection, csrfErrorHandler } from "./csrf";
 
 export class ExpressServer {
     private readonly app: Application;
@@ -15,17 +17,15 @@ export class ExpressServer {
         this.app = express();
         this.port = port !== undefined ? Number(port) : 5000;
         this.middleware();
-        this.routes();
+        setupRoutes(this.app);
     }
 
     middleware(): void {
         this.app.use(bodyParser.json());
         this.app.use(cors());
         this.app.use(createSession());
-    }
-
-    routes(): void {
-        setupRoutes(this.app);
+        this.app.use(cookieParser(cookieSecret));
+        this.app.use(doubleCsrfProtection, csrfErrorHandler);
     }
 
     listen(): void {
