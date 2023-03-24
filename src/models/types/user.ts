@@ -12,7 +12,7 @@ export interface IUser {
     email: string;
     cart: ICart;
     role: UserRoles;
-    password: string;
+    password?: string;
 }
 
 export interface IUserMethods extends IUser {
@@ -23,7 +23,11 @@ export interface IUserMethods extends IUser {
 
 export interface UserModel extends Model<IUser, unknown, IUserMethods> {}
 
-export type UserRoles = "admin" | "seller" | "client";
+export enum UserRoles {
+    admin = "admin",
+    seller = "seller",
+    client = "client"
+}
 
 export interface LoginData {
     email: string;

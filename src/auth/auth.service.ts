@@ -1,11 +1,19 @@
-import { type LoginData } from "../models/types/user";
+import { type DefaultResponse } from "../Types/Response";
+import type { IUser, SignupData, LoginData } from "../models/types/user";
+import AuthRepository from "./auth.repository";
 
 class AuthService {
-    async login(loginData: LoginData) {}
+    async signup(signupData: SignupData): Promise<DefaultResponse<IUser | null>> {
+        return await AuthRepository.signup(signupData);
+    }
 
-    async me() {}
+    async login(loginData: LoginData): Promise<DefaultResponse<IUser | null>> {
+        return await AuthRepository.login(loginData);
+    }
 
-    async logout() {}
+    // async me() {}
+
+    // async logout() {}
 }
 
 export default new AuthService();

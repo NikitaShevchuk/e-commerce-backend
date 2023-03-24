@@ -22,6 +22,7 @@
   "homepage": "https://github.com/NikitaShevchuk/e-commerce-backend#readme",
   "dependencies": {
     "@types/sequelize": "^4.28.14",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "connect-mongodb-session": "^3.1.1",
     "cors": "^2.8.5",
@@ -32,6 +33,7 @@
     "mysql2": "^3.2.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/body-parser": "^1.19.2",
     "@types/connect-mongodb-session": "^2.4.4",
     "@types/cors": "^2.8.13",

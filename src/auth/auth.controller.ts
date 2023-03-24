@@ -1,15 +1,20 @@
+import type { LoginData, SignupData } from "./../models/types/user";
 import type { Response, Request } from "express";
-import { userId } from "../cart/cart.repository";
-import User from "../models/User";
+import AuthService from "./auth.service";
 
 class AuthController {
+    async signup(request: Request, response: Response): Promise<void> {
+        const signupData = request.body as SignupData;
+        const result = await AuthService.signup(signupData);
+        if (result.success) response.status(201).json(result);
+        else response.status(403).json(result);
+    }
+
     async login(request: Request, response: Response): Promise<void> {
-        const user = await User.findById(userId);
-        if (request.session !== undefined) {
-            request.session.isLoggedIn = true;
-            request.session.user = user;
-        }
-        response.status(200).json({ success: true });
+        const loginData = request.body as LoginData;
+        const result = await AuthService.login(loginData);
+        if (result.success) response.status(200).json(result);
+        else response.status(403).json(result);
     }
 
     async me(request: Request, response: Response): Promise<void> {

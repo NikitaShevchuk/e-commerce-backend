@@ -4,7 +4,7 @@ import {
     createRemoveFromCartMethod
 } from "./methods/user";
 import { Types, Schema, model } from "mongoose";
-import type { IUser, UserModel, IUserMethods } from "./types/user";
+import { type IUser, type UserModel, type IUserMethods, UserRoles } from "./types/user";
 
 export const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
     {
@@ -37,7 +37,7 @@ export const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
         },
         role: {
             type: String,
-            enum: ["admin", "seller", "client"],
+            enum: [UserRoles.admin, UserRoles.seller, UserRoles.client],
             required: true
         },
         password: {
