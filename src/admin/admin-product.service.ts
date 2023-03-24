@@ -1,4 +1,4 @@
-import type { IProduct } from "./../models/Product";
+import type { IProduct } from "./../models/types/product";
 import AdminProductRepository from "./admin-product.repository";
 
 class AdminProductsService {

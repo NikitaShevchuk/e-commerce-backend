@@ -1,17 +1,5 @@
 import * as mongoose from "mongoose";
-
-export interface IProduct extends Document {
-    _id: number;
-    title: string;
-    price: number;
-    description: string;
-    sizes: string[];
-    isFavorite: boolean;
-    productIsNew: boolean;
-    image: string;
-    color: string;
-    userId: mongoose.Types.ObjectId | undefined;
-}
+import { type IProduct, Sizes } from "./types/product";
 
 export const ProductSchema = new mongoose.Schema<IProduct, mongoose.Model<IProduct>, IProduct>(
     {
@@ -34,7 +22,7 @@ export const ProductSchema = new mongoose.Schema<IProduct, mongoose.Model<IProdu
             type: [
                 {
                     type: String,
-                    enum: ["XS", "S", "MD", "L", "XL"]
+                    enum: [Sizes.XS, Sizes.S, Sizes.MD, Sizes.L, Sizes.XL]
                 }
             ]
         },

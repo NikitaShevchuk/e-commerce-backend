@@ -1,5 +1,6 @@
 import Product from "../models/Product";
-import User, { type ICart } from "../models/User";
+import User from "../models/User";
+import { type ICart } from "../models/types/user";
 
 export const userId = "641a2224e121b838322a6489";
 

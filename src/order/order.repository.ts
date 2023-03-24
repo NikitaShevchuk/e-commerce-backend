@@ -1,6 +1,6 @@
-import { OrderStatus } from "./../models/Order";
 import { getProductsAndUser } from "./utils/getProductsAndUser";
-import Order, { type IOrder } from "../models/Order";
+import Order from "../models/Order";
+import { type IOrder, OrderStatus } from "../models/types/order";
 
 class OrderRepository {
     async get(): Promise<IOrder[]> {

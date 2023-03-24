@@ -1,4 +1,4 @@
-import type { IProduct } from "../models/Product";
+import type { IProduct } from "../models/types/product";
 import Product from "../models/Product";
 import User from "../models/User";
 

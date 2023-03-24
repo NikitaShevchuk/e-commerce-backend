@@ -1,4 +1,4 @@
-import { type IUserMethods, type ICart, type IUser } from "../../models/User";
+import { type IUserMethods, type ICart, type IUser } from "../../models/types/user";
 import User from "../../models/User";
 import { userId } from "../../cart/cart.repository";
 import { type Types, type Document } from "mongoose";

@@ -1,4 +1,4 @@
-import { type IOrder } from "../models/Order";
+import { type IOrder } from "../models/types/order";
 import OrderRepository from "./order.repository";
 
 class OrderService {

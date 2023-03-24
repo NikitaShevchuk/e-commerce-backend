@@ -3,31 +3,8 @@ import {
     createClearCartMethod,
     createRemoveFromCartMethod
 } from "./methods/user";
-import { type Model, Types, Schema, model } from "mongoose";
-
-export interface ICart {
-    items: Array<{
-        product: Types.ObjectId;
-        quantity: number;
-    }>;
-}
-
-export interface IUser {
-    name: string;
-    email: string;
-    cart: ICart;
-    role: UserRoles;
-}
-
-export interface IUserMethods extends IUser {
-    addToCart: (newCartItemId: string) => Promise<void>;
-    removeOne: (productId: string) => Promise<void>;
-    clearCart: () => Promise<void>;
-}
-
-export interface UserModel extends Model<IUser, unknown, IUserMethods> {}
-
-export type UserRoles = "admin" | "seller" | "client";
+import { Types, Schema, model } from "mongoose";
+import type { IUser, UserModel, IUserMethods } from "./types/user";
 
 export const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
     {
@@ -61,6 +38,10 @@ export const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
         role: {
             type: String,
             enum: ["admin", "seller", "client"],
+            required: true
+        },
+        password: {
+            type: String,
             required: true
         }
     },

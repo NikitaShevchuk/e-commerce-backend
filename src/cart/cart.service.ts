@@ -1,4 +1,4 @@
-import { type ICart } from "../models/User";
+import { type ICart } from "../models/types/user";
 import CartRepository, { type Result } from "./cart.repository";
 
 class CartService {

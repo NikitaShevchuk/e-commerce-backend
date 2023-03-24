@@ -1,24 +1,6 @@
-import { ProductSchema, type IProduct } from "./Product";
-import { type Model, Types, Schema, model } from "mongoose";
-
-export enum OrderStatus {
-    uncompleted = "uncompleted",
-    processing = "processing",
-    completed = "completed"
-}
-
-export interface IOrder extends Document {
-    products: Array<{
-        product: IProduct | null;
-        quantity: number;
-    }>;
-    user: typeof Types.ObjectId;
-    status: OrderStatus;
-}
-
-export interface IOrderMethods extends IOrder {}
-
-interface OrderModel extends Model<IOrder, unknown, IOrderMethods> {}
+import { ProductSchema } from "./Product";
+import { Types, Schema, model } from "mongoose";
+import { type IOrder, type OrderModel, type IOrderMethods, OrderStatus } from "./types/order";
 
 export const OrderSchema = new Schema<IOrder, OrderModel, IOrderMethods>(
     {
