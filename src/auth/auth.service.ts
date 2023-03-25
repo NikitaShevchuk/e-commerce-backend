@@ -1,4 +1,6 @@
+import type { Request, Response } from "express";
 import { type DefaultResponse } from "../Types/Response";
+import { generateToken } from "../csrf";
 import type { IUser, SignupData, LoginData } from "../models/types/user";
 import AuthRepository from "./auth.repository";
 
@@ -7,15 +9,13 @@ class AuthService {
         return await AuthRepository.signup(signupData);
     }
 
-    async login(
-        loginData: LoginData,
-        session: Express.Session | undefined
-    ): Promise<DefaultResponse<IUser | null>> {
+    async login(request: Request, response: Response): Promise<DefaultResponse<IUser | null>> {
+        const loginData = request.body as LoginData;
         const loginResult = await AuthRepository.login(loginData);
 
-        if (loginResult.success && session !== undefined) session.isLoggedIn = true;
+        if (loginResult.success && request.session !== undefined) request.session.isLoggedIn = true;
 
-        return loginResult;
+        return { ...loginResult, token: generateToken(response, request) };
     }
 
     // async me() {}

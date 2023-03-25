@@ -5,7 +5,7 @@ import orderRoute from "./order";
 import authRoute from "./auth";
 import { checkAuthorization } from "../middleware/is-auth";
 import shopRoute from "./shop";
-import { generateToken } from "../csrf";
+import { doubleCsrfProtection, csrfErrorHandler } from "../csrf";
 
 const APP_BASE_URL = "api";
 
@@ -20,13 +20,6 @@ const paths = {
 };
 
 export const setupRoutes = (app: Application): void => {
-    // csrf token
-    app.get(`/${paths.default}/csrf-token`, (request, response) => {
-        return response.json({
-            token: generateToken(response, request)
-        });
-    });
-
     // Public routes
     app.get(`/${paths.default}`, (_, response) => {
         response.send("The server is up and running!");
@@ -35,6 +28,7 @@ export const setupRoutes = (app: Application): void => {
     app.use(paths.auth, authRoute);
 
     // Private routes
+    app.use(doubleCsrfProtection, csrfErrorHandler);
     app.use(paths.admin, checkAuthorization, adminRoute);
     app.use(paths.cart, checkAuthorization, cartRoute);
     app.use(paths.order, checkAuthorization, orderRoute);

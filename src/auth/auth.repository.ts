@@ -4,6 +4,7 @@ import User from "../models/User";
 import type { LoginData, SignupData, IUser } from "../models/types/user";
 import bcrypt from "bcryptjs";
 import { createSuccessAuthResult, loginErrorResult, signupErrorResult } from "./results";
+import Mail from "../mail";
 
 class AuthRepository {
     async signup(signupData: SignupData): Promise<DefaultResponse<IUser | null>> {
@@ -21,6 +22,7 @@ class AuthRepository {
             role: UserRoles.client
         });
         await user.save();
+        Mail.registration(user.email);
         return createSuccessAuthResult(user);
     }
 
@@ -36,10 +38,6 @@ class AuthRepository {
 
         return loginErrorResult;
     }
-
-    // async me() {}
-
-    // async logout() {}
 }
 
 export default new AuthRepository();

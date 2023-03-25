@@ -2,11 +2,10 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import { createSession } from "./session-options";
 import express, { type Application } from "express";
-import { connectToDatabase } from "./Database";
+import { connectToDatabase } from "./database";
 import { setupRoutes } from "./routes/paths";
 import { cookieSecret, port } from "./environment-variables";
 import cookieParser from "cookie-parser";
-import { doubleCsrfProtection, csrfErrorHandler } from "./csrf";
 
 export class ExpressServer {
     private readonly app: Application;
@@ -25,7 +24,6 @@ export class ExpressServer {
         this.app.use(cors());
         this.app.use(createSession());
         this.app.use(cookieParser(cookieSecret));
-        this.app.use(doubleCsrfProtection, csrfErrorHandler);
     }
 
     listen(): void {

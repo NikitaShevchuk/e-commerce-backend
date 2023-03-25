@@ -1,4 +1,4 @@
-import type { LoginData, SignupData } from "./../models/types/user";
+import type { SignupData } from "./../models/types/user";
 import type { Response, Request } from "express";
 import AuthService from "./auth.service";
 
@@ -11,8 +11,7 @@ class AuthController {
     }
 
     async login(request: Request, response: Response): Promise<void> {
-        const loginData = request.body as LoginData;
-        const result = await AuthService.login(loginData, request.session);
+        const result = await AuthService.login(request, response);
         if (result.success) response.status(200).json(result);
         else response.status(403).json(result);
     }
