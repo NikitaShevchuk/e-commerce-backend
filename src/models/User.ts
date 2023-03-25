@@ -1,8 +1,4 @@
-import {
-    createAddToCartMethod,
-    createClearCartMethod,
-    createRemoveFromCartMethod
-} from "./methods/user";
+import UserMethods from "./methods/user";
 import { Types, Schema, model } from "mongoose";
 import { type IUser, type UserModel, type IUserMethods, UserRoles } from "./types/user";
 
@@ -43,15 +39,14 @@ export const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
         password: {
             type: String,
             required: true
-        }
+        },
+        resetToken: String,
+        resetTokenExpiration: Date
     },
     { collection: "Users" }
 );
 
-// create new methods for User Schema
-createAddToCartMethod();
-createRemoveFromCartMethod();
-createClearCartMethod();
+UserMethods.createAll();
 
 export default model<IUser, UserModel>("User", UserSchema);
 export type UserSchemaType = typeof UserSchema;

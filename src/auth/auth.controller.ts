@@ -13,7 +13,7 @@ class AuthController {
     async login(request: Request, response: Response): Promise<void> {
         const result = await AuthService.login(request, response);
         if (result.success) response.status(200).json(result);
-        else response.status(403).json(result);
+        else response.status(401).json(result);
     }
 
     async me(request: Request, response: Response): Promise<void> {
@@ -27,10 +27,19 @@ class AuthController {
     async logout(request: Request, response: Response): Promise<void> {
         request.session?.destroy((error) => {
             // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-            if (error)
+            if (error) {
                 response.status(500).json({ success: false, isAuthorized: true, message: error });
-            else response.status(200).json({ success: true, isAuthorized: false });
+            } else {
+                response.status(200).json({ success: true, isAuthorized: false });
+            }
         });
+    }
+
+    async resetPassword(request: Request, response: Response): Promise<void> {
+        const email = request.body?.email;
+        const result = await AuthService.resetPassword(email);
+        if (result.success) response.status(200).json(result);
+        else response.status(422).json(result);
     }
 }
 

@@ -13,6 +13,8 @@ export interface IUser {
     cart: ICart;
     role: UserRoles;
     password?: string;
+    resetToken?: string;
+    resetTokenExpiration?: number;
 }
 
 export interface IUserMethods extends IUser {
