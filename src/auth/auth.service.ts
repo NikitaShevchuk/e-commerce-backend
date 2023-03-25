@@ -26,21 +26,28 @@ class AuthService {
 
     async resetPassword(email: string): Promise<DefaultResponse<undefined>> {
         const token = crypto.randomBytes(32).toString("hex");
-        const user = await User.findOne({ email });
+        const result = await AuthRepository.resetPassword(email, token);
+        if (result.success) void Mail.passwordReset(email, token);
+        return result;
+    }
 
-        if (user === null) {
-            return { success: false, message: "User with this email is not registered!" };
-        }
+    async validateResetToken(token: string): Promise<DefaultResponse<{ userId: string }>> {
+        const userWithToken = await User.findOne({
+            resetToken: token,
+            resetTokenExpiration: { $gt: Date.now() }
+        });
 
-        user.resetToken = token;
-        user.resetTokenExpiration = Date.now() + 3600000;
+        if (userWithToken !== null) {
+            return { success: true, data: { userId: String(userWithToken._id) } };
+        } else return { success: false, message: "Token for password reset is invalid!" };
+    }
 
-        await user.save();
-        void Mail.passwordReset(user.email, token);
-        return {
-            success: true,
-            message: `A link to change your password has been sent to ${user.email}`
-        };
+    async createNewPassword(
+        userId: string,
+        resetToken: string,
+        password: string
+    ): Promise<DefaultResponse<undefined>> {
+        return await AuthRepository.createNewPassword(userId, resetToken, password);
     }
 }
 

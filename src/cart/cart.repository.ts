@@ -2,7 +2,7 @@ import Product from "../models/Product";
 import User from "../models/User";
 import { type ICart } from "../models/types/user";
 
-export const userId = "641e2317a6f44c98f5e15336";
+export const userId = "641e3ba02ac6c35176b35490";
 
 export interface Result {
     success: boolean;
@@ -13,7 +13,7 @@ class CartRepository {
     async get(): Promise<ICart | null> {
         const user = await User.findById(userId).populate("cart.items.product");
         if (user != null) return user.cart;
-        else return user;
+        else return { items: [] };
     }
 
     async addCartItem(newCartProductId: string): Promise<ICart | null> {

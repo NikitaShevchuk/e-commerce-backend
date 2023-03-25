@@ -6,14 +6,12 @@ class AuthController {
     async signup(request: Request, response: Response): Promise<void> {
         const signupData = request.body as SignupData;
         const result = await AuthService.signup(signupData);
-        if (result.success) response.status(201).json(result);
-        else response.status(403).json(result);
+        response.status(result.success ? 200 : 401).json(result);
     }
 
     async login(request: Request, response: Response): Promise<void> {
         const result = await AuthService.login(request, response);
-        if (result.success) response.status(200).json(result);
-        else response.status(401).json(result);
+        response.status(result.success ? 200 : 401).json(result);
     }
 
     async me(request: Request, response: Response): Promise<void> {
@@ -38,8 +36,21 @@ class AuthController {
     async resetPassword(request: Request, response: Response): Promise<void> {
         const email = request.body?.email;
         const result = await AuthService.resetPassword(email);
-        if (result.success) response.status(200).json(result);
-        else response.status(422).json(result);
+        response.status(result.success ? 200 : 422).json(result);
+    }
+
+    async validateResetToken(request: Request, response: Response): Promise<void> {
+        const token = request.params.token;
+        const result = await AuthService.validateResetToken(token);
+
+        response.status(result.success ? 200 : 401).json(result);
+    }
+
+    async createNewPassword(request: Request, response: Response): Promise<void> {
+        const { password, resetToken, userId } = request.body;
+        const result = await AuthService.createNewPassword(userId, resetToken, password);
+
+        response.status(result.success ? 200 : 422).json(result);
     }
 }
 

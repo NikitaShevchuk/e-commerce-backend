@@ -8,8 +8,7 @@ export const { invalidCsrfTokenError, generateToken, doubleCsrfProtection } = do
     cookieName: cookieSecret,
     cookieOptions: { sameSite: false, secure: false, signed: true }, // TODO: not ideal for production, development only
     size: 64,
-    ignoredMethods: ["GET", "HEAD", "OPTIONS"],
-    getTokenFromRequest: (request?: Request) => request?.body.token
+    ignoredMethods: ["GET", "HEAD", "OPTIONS"]
 });
 
 export const csrfErrorHandler = (

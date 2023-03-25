@@ -22,7 +22,7 @@ class AuthRepository {
             role: UserRoles.client
         });
         await user.save();
-        Mail.registration(user.email);
+        void Mail.registration(user.email);
         return createSuccessAuthResult(user);
     }
 
@@ -37,6 +37,54 @@ class AuthRepository {
         if (passwordIsValid) return createSuccessAuthResult(user);
 
         return loginErrorResult;
+    }
+
+    async resetPassword(email: string, token: string): Promise<DefaultResponse<undefined>> {
+        const user = await User.findOne({ email });
+
+        if (user === null) {
+            return { success: false, message: "User with this email is not registered!" };
+        }
+
+        user.resetToken = token;
+        user.resetTokenExpiration = Date.now() + 3600000;
+
+        await user.save();
+        return {
+            success: true,
+            message: `A link to change your password has been sent to ${user.email}`
+        };
+    }
+
+    async createNewPassword(
+        userId: string,
+        resetToken: string,
+        password: string
+    ): Promise<DefaultResponse<undefined>> {
+        const user = await User.findOne({
+            _id: userId,
+            resetToken,
+            resetTokenExpiration: { $gt: Date.now() }
+        });
+
+        if (user === null) {
+            return {
+                success: false,
+                message: "Invalid credentials for password reset"
+            };
+        }
+
+        const newPassword = await bcrypt.hash(password, 12);
+
+        user.password = newPassword;
+        user.resetToken = undefined;
+        user.resetTokenExpiration = undefined;
+        await user.save();
+
+        return {
+            success: true,
+            message: "New password saved successfully."
+        };
     }
 }
 
