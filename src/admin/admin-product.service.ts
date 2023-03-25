@@ -2,12 +2,13 @@ import type { IProduct } from "./../models/types/product";
 import AdminProductRepository from "./admin-product.repository";
 
 class AdminProductsService {
-    async create(newProduct: IProduct): Promise<IProduct> {
+    async create(newProduct: IProduct, userId: string): Promise<IProduct> {
+        newProduct.userId = userId;
         return await AdminProductRepository.create(newProduct);
     }
 
-    async getAll(): Promise<IProduct[]> {
-        return await AdminProductRepository.getAll();
+    async getAll(userId: string): Promise<IProduct[]> {
+        return await AdminProductRepository.getAll(userId);
     }
 
     async getByName(name: string): Promise<IProduct | null> {

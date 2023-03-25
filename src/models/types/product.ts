@@ -18,5 +18,5 @@ export interface IProduct extends Document {
     productIsNew: boolean;
     image: string;
     color: string;
-    userId: Types.ObjectId | undefined;
+    userId: Types.ObjectId | undefined | string;
 }

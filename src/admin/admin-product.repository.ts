@@ -9,8 +9,8 @@ class AdminProductsRepository {
         return product;
     }
 
-    async getAll(): Promise<IProduct[]> {
-        return await Product.find().populate("userId", ["name", "email", "role"], User);
+    async getAll(userId: string): Promise<IProduct[]> {
+        return await Product.find({ userId }).populate("userId", ["name", "email", "role"], User);
     }
 
     async getByName(name: string): Promise<IProduct | null> {

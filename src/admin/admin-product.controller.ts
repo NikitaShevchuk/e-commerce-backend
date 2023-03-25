@@ -3,19 +3,16 @@ import AdminProductService from "./admin-product.service";
 
 class AdminProductsController {
     async create(request: Request, response: Response): Promise<void> {
+        const userId = request.session?.user?._id;
         const newProduct = request.body;
-        const product = await AdminProductService.create(newProduct);
+        const product = await AdminProductService.create(newProduct, userId);
         response.status(201).json(product);
     }
 
     async getAll(request: Request, response: Response): Promise<void> {
-        if (typeof request.query?.name === "string") {
-            const product = await AdminProductService.getByName(request.query?.name);
-            response.status(200).json(product);
-        } else {
-            const products = await AdminProductService.getAll();
-            response.status(200).json(products);
-        }
+        const userId = request.session?.user?._id;
+        const product = await AdminProductService.getAll(userId);
+        response.status(200).json(product);
     }
 
     async getById(request: Request, response: Response): Promise<void> {

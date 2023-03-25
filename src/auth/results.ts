@@ -17,6 +17,7 @@ export const createSuccessAuthResult = (user: IUser): DefaultResponse<IUser> => 
         name: user.name,
         email: user.email,
         cart: user.cart,
-        role: user.role
+        role: user.role,
+        _id: user._id
     }
 });

@@ -18,6 +18,7 @@ class AuthService {
 
         if (loginResult.success && request.session !== undefined) {
             request.session.isLoggedIn = true;
+            request.session.user = loginResult.data;
             return { ...loginResult, token: generateToken(response, request) };
         }
 
