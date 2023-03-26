@@ -13,22 +13,23 @@ class AdminProductsRepository {
         return await Product.find({ userId }).populate("userId", ["name", "email", "role"], User);
     }
 
-    async getByName(name: string): Promise<IProduct | null> {
+    async getByTitle(name: string, userId: string): Promise<IProduct | null> {
         return await Product.findOne({
-            name: { $regex: `/${name}/i` }
+            name: { $regex: `/${name}/i` },
+            userId
         });
     }
 
-    async getById(id: string): Promise<IProduct | null> {
-        return await Product.findById(id);
+    async getById(id: string, userId: string): Promise<IProduct | null> {
+        return await Product.findOne({ _id: id, userId });
     }
 
-    async update(id: string, updatedProduct: IProduct): Promise<IProduct | null> {
-        return await Product.findOneAndUpdate({ _id: id }, updatedProduct);
+    async update(id: string, updatedProduct: IProduct, userId: string): Promise<IProduct | null> {
+        return await Product.findOneAndUpdate({ _id: id, userId }, updatedProduct);
     }
 
-    async delete(id: string): Promise<IProduct | null> {
-        return await Product.findByIdAndDelete(id);
+    async delete(id: string, userId: string): Promise<IProduct | null> {
+        return await Product.findOneAndDelete({ _id: id, userId });
     }
 }
 

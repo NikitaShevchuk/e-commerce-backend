@@ -86,6 +86,10 @@ class AuthRepository {
             message: "New password saved successfully."
         };
     }
+
+    async getUser(userId: string): Promise<IUser | null> {
+        return await User.findById(userId).select(["-password"]);
+    }
 }
 
 export default new AuthRepository();

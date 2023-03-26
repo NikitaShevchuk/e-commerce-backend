@@ -11,20 +11,20 @@ class AdminProductsService {
         return await AdminProductRepository.getAll(userId);
     }
 
-    async getByName(name: string): Promise<IProduct | null> {
-        return await AdminProductRepository.getByName(name);
+    async getByTitle(name: string, userId: string): Promise<IProduct | null> {
+        return await AdminProductRepository.getByTitle(name, userId);
     }
 
-    async getById(id: string): Promise<IProduct | null> {
-        return await AdminProductRepository.getById(id);
+    async getById(id: string, userId: string): Promise<IProduct | null> {
+        return await AdminProductRepository.getById(id, userId);
     }
 
-    async update(id: string, updatedProduct: IProduct): Promise<IProduct | null> {
-        return await AdminProductRepository.update(id, updatedProduct);
+    async update(id: string, updatedProduct: IProduct, userId: string): Promise<IProduct | null> {
+        return await AdminProductRepository.update(id, updatedProduct, userId);
     }
 
-    async delete(id: string): Promise<IProduct | null> {
-        return await AdminProductRepository.delete(id);
+    async delete(id: string, userId: string): Promise<IProduct | null> {
+        return await AdminProductRepository.delete(id, userId);
     }
 }
 

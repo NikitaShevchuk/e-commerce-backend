@@ -25,6 +25,19 @@ class AuthService {
         return loginResult;
     }
 
+    async logout(session: Express.Session | undefined): Promise<DefaultResponse<undefined>> {
+        const result: DefaultResponse<undefined> = await new Promise((resolve) => {
+            session?.destroy((error) => {
+                if (error !== undefined) {
+                    resolve({ success: false, isAuthorized: true, message: error });
+                } else {
+                    resolve({ success: true, isAuthorized: false });
+                }
+            });
+        });
+        return result;
+    }
+
     async resetPassword(email: string): Promise<DefaultResponse<undefined>> {
         const token = crypto.randomBytes(32).toString("hex");
         const result = await AuthRepository.resetPassword(email, token);
@@ -49,6 +62,21 @@ class AuthService {
         password: string
     ): Promise<DefaultResponse<undefined>> {
         return await AuthRepository.createNewPassword(userId, resetToken, password);
+    }
+
+    async getUser(
+        userId: string,
+        session: Express.Session | undefined
+    ): Promise<DefaultResponse<IUser | null | undefined>> {
+        const userIsLoggedIn =
+            session !== undefined && session?.isLoggedIn === true && session?.user !== undefined;
+
+        if (userIsLoggedIn) {
+            const user = await AuthRepository.getUser(userId);
+            return { success: user !== null, isAuthorized: user !== null, data: user };
+        } else {
+            return { success: false, isAuthorized: false };
+        }
     }
 }
 

@@ -3,4 +3,5 @@ export interface DefaultResponse<T> {
     data?: T;
     message?: string;
     token?: string;
+    isAuthorized?: boolean;
 }

@@ -15,22 +15,13 @@ class AuthController {
     }
 
     async me(request: Request, response: Response): Promise<void> {
-        if (request.session !== undefined && request.session?.isLoggedIn === true) {
-            response.status(200).json({ success: true, isAuthorized: true });
-        } else {
-            response.status(401).json({ success: true, isAuthorized: false });
-        }
+        const result = await AuthService.getUser(request.session?.user?._id, request.session);
+        response.status(result.success ? 200 : 401).json(result);
     }
 
     async logout(request: Request, response: Response): Promise<void> {
-        request.session?.destroy((error) => {
-            // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-            if (error) {
-                response.status(500).json({ success: false, isAuthorized: true, message: error });
-            } else {
-                response.status(200).json({ success: true, isAuthorized: false });
-            }
-        });
+        const result = await AuthService.logout(request.session);
+        response.status(result.success ? 200 : 422).json(result);
     }
 
     async resetPassword(request: Request, response: Response): Promise<void> {
