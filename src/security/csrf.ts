@@ -1,6 +1,6 @@
 import { doubleCsrf } from "csrf-csrf";
 import type { NextFunction, Request, Response } from "express";
-import { cookieSecret } from "./environment-variables";
+import { cookieSecret } from "../environment-variables";
 
 export const { invalidCsrfTokenError, generateToken, doubleCsrfProtection } = doubleCsrf({
     getSecret: (request?: Request) =>

@@ -1,6 +1,6 @@
 import bodyParser from "body-parser";
 import cors from "cors";
-import { createSession } from "./session-options";
+import { createSession } from "./security/session-options";
 import express, { type Application } from "express";
 import { connectToDatabase } from "./database";
 import { setupRoutes } from "./routes/paths";

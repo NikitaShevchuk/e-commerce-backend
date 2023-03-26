@@ -1,12 +1,17 @@
-import type { SignupData } from "./../models/types/user";
 import type { Response, Request } from "express";
 import AuthService from "./auth.service";
+import { validationResult } from "express-validator";
+import { createValidationErrorResponse } from "./results";
 
 class AuthController {
     async signup(request: Request, response: Response): Promise<void> {
-        const signupData = request.body as SignupData;
-        const result = await AuthService.signup(signupData);
-        response.status(result.success ? 200 : 401).json(result);
+        const errors = validationResult(request);
+        if (!errors.isEmpty()) {
+            response.status(422).json(createValidationErrorResponse(errors));
+            return;
+        }
+        const result = await AuthService.signup(request.body);
+        response.status(result.success ? 200 : 422).json(result);
     }
 
     async login(request: Request, response: Response): Promise<void> {
@@ -15,7 +20,7 @@ class AuthController {
     }
 
     async me(request: Request, response: Response): Promise<void> {
-        const result = await AuthService.getUser(request.session?.user?._id, request.session);
+        const result = await AuthService.me(request, response);
         response.status(result.success ? 200 : 401).json(result);
     }
 

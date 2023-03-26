@@ -87,7 +87,7 @@ class AuthRepository {
         };
     }
 
-    async getUser(userId: string): Promise<IUser | null> {
+    async me(userId: string): Promise<IUser | null> {
         return await User.findById(userId).select(["-password"]);
     }
 }

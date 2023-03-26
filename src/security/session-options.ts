@@ -1,5 +1,5 @@
 import session, { type Store } from "express-session";
-import { databaseLink, sessionSecret } from "./environment-variables";
+import { databaseLink, sessionSecret } from "../environment-variables";
 import { type RequestHandler } from "express";
 import MongoDBStore from "connect-mongodb-session";
 

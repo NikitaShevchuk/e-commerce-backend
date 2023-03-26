@@ -5,7 +5,7 @@ import orderRoute from "./order";
 import authRoute from "./auth";
 import { checkAuthorization } from "../middleware/is-auth";
 import shopRoute from "./shop";
-import { doubleCsrfProtection, csrfErrorHandler } from "../csrf";
+import { doubleCsrfProtection, csrfErrorHandler } from "../security/csrf";
 
 const APP_BASE_URL = "api";
 

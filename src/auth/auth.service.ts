@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { type DefaultResponse } from "../Types/Response";
-import { generateToken } from "../csrf";
+import { generateToken } from "../security/csrf";
 import type { IUser, SignupData, LoginData } from "../models/types/user";
 import AuthRepository from "./auth.repository";
 import crypto from "crypto";
@@ -64,16 +64,23 @@ class AuthService {
         return await AuthRepository.createNewPassword(userId, resetToken, password);
     }
 
-    async getUser(
-        userId: string,
-        session: Express.Session | undefined
+    async me(
+        request: Request,
+        response: Response
     ): Promise<DefaultResponse<IUser | null | undefined>> {
         const userIsLoggedIn =
-            session !== undefined && session?.isLoggedIn === true && session?.user !== undefined;
+            request.session !== undefined &&
+            request.session?.isLoggedIn === true &&
+            request.session?.user !== undefined;
 
         if (userIsLoggedIn) {
-            const user = await AuthRepository.getUser(userId);
-            return { success: user !== null, isAuthorized: user !== null, data: user };
+            const user = await AuthRepository.me(request.session?.user?._id);
+            return {
+                success: user !== null,
+                isAuthorized: user !== null,
+                data: user,
+                token: generateToken(response, request)
+            };
         } else {
             return { success: false, isAuthorized: false };
         }

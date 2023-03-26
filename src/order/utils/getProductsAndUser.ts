@@ -18,7 +18,7 @@ interface ReturnType {
 }
 
 export const getProductsAndUser = async (): Promise<ReturnType> => {
-    const user = await User.findById(userId).populate("cart.items.product");
+    const user = await User.findById(userId).select(["-password"]).populate("cart.items.product");
     const products = user?.cart != null ? user?.cart : null;
     return {
         products,
