@@ -15,6 +15,11 @@ class AuthController {
     }
 
     async login(request: Request, response: Response): Promise<void> {
+        const errors = validationResult(request);
+        if (!errors.isEmpty()) {
+            response.status(422).json(createValidationErrorResponse(errors));
+            return;
+        }
         const result = await AuthService.login(request, response);
         response.status(result.success ? 200 : 401).json(result);
     }

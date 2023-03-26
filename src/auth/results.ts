@@ -12,6 +12,11 @@ export const signupErrorResult = {
     message: "User with same email already exists!"
 };
 
+export const passwordResetErrorResult = {
+    success: false,
+    message: "Invalid credentials for password reset"
+};
+
 export const createSuccessAuthResult = (user: IUser): DefaultResponse<IUser> => ({
     success: true,
     data: {

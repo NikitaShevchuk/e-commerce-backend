@@ -1,11 +1,11 @@
 import { body } from "express-validator";
-
-const errorsMessages = {
-    password: "Password can only contain letters and numbers and must be of length from 8 to 24.",
-    email: "Please enter a valid email address."
-};
+import { validators, errorsMessages } from ".";
 
 export const signupValidators = [
-    body("password", errorsMessages.password).isLength({ min: 8, max: 24 }).isAlphanumeric(),
-    body("email", errorsMessages.email).isEmail()
+    validators.password(),
+    validators.email(),
+    body("name", errorsMessages.name).isLength({ min: 3, max: 100 }).isAlphanumeric(),
+    body("confirmPassword", errorsMessages.confirmPassword)
+        .trim()
+        .custom((confirmPasswordValue, { req }) => confirmPasswordValue === req.body.password)
 ];
