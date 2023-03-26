@@ -1,6 +1,5 @@
 import type { DefaultResponse } from "./../Types/Response";
 import type { IUser } from "../models/types/user";
-import type { Result, ValidationError } from "express-validator";
 
 export const loginErrorResult = {
     success: false,
@@ -26,12 +25,4 @@ export const createSuccessAuthResult = (user: IUser): DefaultResponse<IUser> => 
         role: user.role,
         _id: user._id
     }
-});
-
-export const createValidationErrorResponse = (
-    errors: Result<ValidationError>
-): DefaultResponse<undefined> => ({
-    success: false,
-    validationErrors: errors.array(),
-    message: "Validation error"
 });

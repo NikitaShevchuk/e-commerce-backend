@@ -1,7 +1,7 @@
 import type { Response, Request } from "express";
 import AuthService from "./auth.service";
 import { validationResult } from "express-validator";
-import { createValidationErrorResponse } from "./results";
+import { createValidationErrorResponse } from "../validators/validation-error";
 
 class AuthController {
     async signup(request: Request, response: Response): Promise<void> {
