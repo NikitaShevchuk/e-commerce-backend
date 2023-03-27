@@ -1,13 +1,13 @@
-import type { Response, Request } from "express";
+import type { RequestHandler } from "express";
 import CartService from "./cart.service";
 
 class CartController {
-    async get(request: Request, response: Response): Promise<void> {
+    get: RequestHandler = async (request, response) => {
         const cart = await CartService.get();
         response.status(200).json(cart);
-    }
+    };
 
-    async addCartItem(request: Request, response: Response): Promise<void> {
+    addCartItem: RequestHandler = async (request, response) => {
         const productId = request.params.productId;
         if (productId.length === 0) {
             response.status(404).json({ message: "Product id is required!" });
@@ -19,9 +19,9 @@ class CartController {
             return;
         }
         response.status(200).json(updatedCart);
-    }
+    };
 
-    async removeOne(request: Request, response: Response): Promise<void> {
+    removeOne: RequestHandler = async (request, response) => {
         const productId = request.params.productId;
         if (productId.length === 0) {
             response.status(404).json({ message: "Product id is required!" });
@@ -33,13 +33,13 @@ class CartController {
             return;
         }
         response.status(200).json(updatedCart);
-    }
+    };
 
-    async removeAll(request: Request, response: Response): Promise<void> {
+    removeAll: RequestHandler = async (request, response) => {
         const { success } = await CartService.removeAll();
         if (success) response.status(200).json({ success });
         else response.status(422).json({ success, errorMessage: "Order id is not valid!" });
-    }
+    };
 }
 
 export default new CartController();
