@@ -6,6 +6,7 @@ import authRoute from "./auth";
 import { checkAuthorization } from "../middleware/is-auth";
 import shopRoute from "./shop";
 import { doubleCsrfProtection, csrfErrorHandler } from "../security/csrf";
+import { errorHandler } from "../middleware/error";
 
 const APP_BASE_URL = "api";
 
@@ -32,4 +33,6 @@ export const setupRoutes = (app: Application): void => {
     app.use(paths.admin, checkAuthorization, adminRoute);
     app.use(paths.cart, checkAuthorization, cartRoute);
     app.use(paths.order, checkAuthorization, orderRoute);
+
+    app.use(errorHandler);
 };

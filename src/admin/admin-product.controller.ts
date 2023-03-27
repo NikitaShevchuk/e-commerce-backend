@@ -28,13 +28,17 @@ class AdminProductsController {
         response.status(200).json(product);
     };
 
-    update: RequestHandler = async (request, response) => {
-        const product = await AdminProductService.update(
-            request.params.id,
-            request.body,
-            request.session?.user?._id
-        );
-        response.status(200).json(product);
+    update: RequestHandler = async (request, response, next) => {
+        try {
+            const product = await AdminProductService.update(
+                request.params.id,
+                request.body,
+                request.session?.user?._id
+            );
+            response.status(200).json(product);
+        } catch (error) {
+            next(error);
+        }
     };
 
     delete: RequestHandler = async (request, response) => {
