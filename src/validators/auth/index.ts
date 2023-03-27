@@ -15,13 +15,16 @@ export const validators = {
             .isLength({ min: 8, max: 24 })
             .isAlphanumeric();
     },
-    email(): ValidationChain {
+    emailForRegistration(): ValidationChain {
         return body("email", errorsMessages.email)
             .isEmail()
+            .normalizeEmail()
             .custom(async (email) => {
                 const user = await AuthRepository.checkIfUserExistsByEmail(email);
                 if (user) throw new Error("User with this email already exists");
-            })
-            .normalizeEmail();
+            });
+    },
+    email(): ValidationChain {
+        return body("email", errorsMessages.email).isEmail().normalizeEmail();
     }
 };

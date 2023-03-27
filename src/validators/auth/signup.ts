@@ -3,7 +3,7 @@ import { validators, errorsMessages } from ".";
 
 export const signupValidators = [
     validators.password(),
-    validators.email(),
+    validators.emailForRegistration(),
     body("name", errorsMessages.name).isLength({ min: 3, max: 100 }).isAlphanumeric(),
     body("confirmPassword", errorsMessages.confirmPassword)
         .trim()

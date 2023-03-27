@@ -40,8 +40,7 @@ class AuthController {
 
     resetPassword: RequestHandler = async (request, response, next) => {
         try {
-            const email = request.body?.email;
-            const result = await AuthService.resetPassword(email);
+            const result = await AuthService.resetPassword(request.body.email);
             response.status(result.success ? 200 : 422).json(result);
         } catch (error) {
             next(error);
@@ -50,9 +49,7 @@ class AuthController {
 
     validateResetToken: RequestHandler = async (request, response, next) => {
         try {
-            const token = request.params.token;
-            const result = await AuthService.validateResetToken(token);
-
+            const result = await AuthService.validateResetToken(request.params.token);
             response.status(result.success ? 200 : 401).json(result);
         } catch (error) {
             next(error);
