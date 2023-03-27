@@ -62,17 +62,11 @@ class AdminProductsController {
 
     delete: RequestHandler = async (request, response, next) => {
         try {
-            if (typeof request.params?.id === "string") {
-                const product = await AdminProductService.delete(
-                    request.params.id,
-                    request.session?.user?._id
-                );
-                response.status(200).json(product);
-            } else {
-                response
-                    .status(422)
-                    .json({ success: false, message: "Product id to delete no found" });
-            }
+            const product = await AdminProductService.delete(
+                request.params.id,
+                request.session?.user?._id
+            );
+            response.status(200).json(product);
         } catch (error) {
             next(error);
         }

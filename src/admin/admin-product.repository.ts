@@ -25,7 +25,8 @@ class AdminProductsRepository {
     }
 
     async update(id: string, updatedProduct: IProduct, userId: string): Promise<IProduct | null> {
-        return await Product.findOneAndUpdate({ _id: id, userId }, updatedProduct);
+        await Product.findOneAndUpdate({ _id: id, userId }, updatedProduct);
+        return await Product.findOne({ _id: id, userId });
     }
 
     async delete(id: string, userId: string): Promise<IProduct | null> {
