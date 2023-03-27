@@ -1,15 +1,8 @@
 import type { Response, Request } from "express";
 import AdminProductService from "./admin-product.service";
-import { validationResult } from "express-validator";
-import { createValidationErrorResponse } from "../validators/validation-error";
 
 class AdminProductsController {
     async create(request: Request, response: Response): Promise<void> {
-        const errors = validationResult(request);
-        if (!errors.isEmpty()) {
-            response.status(422).json(createValidationErrorResponse(errors));
-            return;
-        }
         const product = await AdminProductService.create(request.body, request.session?.user?._id);
         response.status(201).json(product);
     }
@@ -36,11 +29,6 @@ class AdminProductsController {
     }
 
     async update(request: Request, response: Response): Promise<void> {
-        const errors = validationResult(request);
-        if (!errors.isEmpty()) {
-            response.status(422).json(createValidationErrorResponse(errors));
-            return;
-        }
         const product = await AdminProductService.update(
             request.params.id,
             request.body,

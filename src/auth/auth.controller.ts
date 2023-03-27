@@ -1,25 +1,13 @@
 import type { Response, Request } from "express";
 import AuthService from "./auth.service";
-import { validationResult } from "express-validator";
-import { createValidationErrorResponse } from "../validators/validation-error";
 
 class AuthController {
     async signup(request: Request, response: Response): Promise<void> {
-        const errors = validationResult(request);
-        if (!errors.isEmpty()) {
-            response.status(422).json(createValidationErrorResponse(errors));
-            return;
-        }
         const result = await AuthService.signup(request.body);
         response.status(result.success ? 200 : 422).json(result);
     }
 
     async login(request: Request, response: Response): Promise<void> {
-        const errors = validationResult(request);
-        if (!errors.isEmpty()) {
-            response.status(422).json(createValidationErrorResponse(errors));
-            return;
-        }
         const result = await AuthService.login(request, response);
         response.status(result.success ? 200 : 401).json(result);
     }
