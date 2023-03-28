@@ -10,7 +10,9 @@ export const checkAuthorization = (
         request.session?.isLoggedIn !== true ||
         request.session.user === undefined
     ) {
-        response.status(401).json({ message: "Authorization is required to perform this action!" });
+        response
+            .status(401)
+            .json({ success: false, message: "Authorization is required to perform this action!" });
     } else {
         next();
     }

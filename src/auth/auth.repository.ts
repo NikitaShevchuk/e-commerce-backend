@@ -25,11 +25,11 @@ class AuthRepository {
     async login(loginData: LoginData): Promise<DefaultResponse<IUser | null>> {
         const { email, password } = loginData;
         const user = await User.findOne({ email });
+
         if (user === null || user?.password === undefined) return loginErrorResult;
 
         const passwordIsValid = await bcrypt.compare(password, user.password);
         if (passwordIsValid) return createSuccessAuthResult(user);
-
         return loginErrorResult;
     }
 
@@ -39,10 +39,8 @@ class AuthRepository {
         if (user === null) {
             return { success: false, message: "User with this email is not registered!" };
         }
-
         user.resetToken = token;
         user.resetTokenExpiration = Date.now() + 3600000;
-
         await user.save();
         return {
             success: true,
@@ -64,12 +62,10 @@ class AuthRepository {
         if (user === null) return passwordResetErrorResult;
 
         const newPassword = await bcrypt.hash(password, 12);
-
         user.password = newPassword;
         user.resetToken = undefined;
         user.resetTokenExpiration = undefined;
         await user.save();
-
         return {
             success: true,
             message: "New password saved successfully."

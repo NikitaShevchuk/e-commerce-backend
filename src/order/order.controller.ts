@@ -4,8 +4,8 @@ import OrderService from "./order.service";
 class OrderController {
     get: RequestHandler = async (request, response, next) => {
         try {
-            const orders = await OrderService.get();
-            response.status(200).json(orders);
+            const result = await OrderService.get(request.session?.user._id);
+            response.status(result.success ? 200 : 403).json(result);
         } catch (error) {
             next(error);
         }
@@ -13,9 +13,8 @@ class OrderController {
 
     create: RequestHandler = async (request, response, next) => {
         try {
-            const createdOrder = await OrderService.create();
-            if (createdOrder !== null) response.status(201).json(createdOrder);
-            else response.status(422).json({ message: "One of the product's id is not valid!" });
+            const result = await OrderService.create(request.session?.user._id);
+            response.status(result.success ? 201 : 422).json(result);
         } catch (error) {
             next(error);
         }
@@ -23,16 +22,11 @@ class OrderController {
 
     removeOne: RequestHandler = async (request, response, next) => {
         try {
-            const orderId = request.params.orderId;
-            if (typeof orderId !== "string" || orderId.length < 1) {
-                response
-                    .status(422)
-                    .json({ message: "Order id is required for delete operation!" });
-                return;
-            }
-            const deletedOrder = await OrderService.removeOne(orderId);
-            if (deletedOrder !== null) response.status(200).json(deletedOrder);
-            else response.status(422).json({ message: "Order id is not valid!" });
+            const result = await OrderService.removeOne(
+                request.params.id,
+                request.session?.user._id
+            );
+            response.status(result.success ? 200 : 422).json(result);
         } catch (error) {
             next(error);
         }

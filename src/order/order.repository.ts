@@ -3,13 +3,14 @@ import Order from "../models/Order";
 import { type IOrder, OrderStatus } from "../models/types/order";
 
 class OrderRepository {
-    async get(): Promise<IOrder[]> {
-        return await Order.find();
+    async get(userId: string): Promise<IOrder[]> {
+        return await Order.find({ user: userId });
     }
 
-    async create(): Promise<IOrder | null> {
-        const { products, user } = await getProductsAndUser();
+    async create(userId: string): Promise<IOrder | null> {
+        const { products, user } = await getProductsAndUser(userId);
         if (products === null || user === null) return null;
+        if (products.items?.length < 1) return null;
         const newOrder = new Order({
             products: products.items,
             user,
@@ -20,8 +21,8 @@ class OrderRepository {
         return newOrder;
     }
 
-    async removeOne(orderId: string): Promise<IOrder | null> {
-        return await Order.findByIdAndRemove(orderId);
+    async removeOne(orderId: string, userId: string): Promise<IOrder | null> {
+        return await Order.findOneAndRemove({ _id: orderId, user: userId });
     }
 }
 
