@@ -5,8 +5,12 @@ export const checkAuthorization = (
     response: Response,
     next: NextFunction
 ): void => {
-    if (request.session === undefined || request.session?.isLoggedIn !== true) {
-        response.status(403).json({ message: "Authorization is required to perform this action!" });
+    if (
+        request.session === undefined ||
+        request.session?.isLoggedIn !== true ||
+        request.session.user === undefined
+    ) {
+        response.status(401).json({ message: "Authorization is required to perform this action!" });
     } else {
         next();
     }

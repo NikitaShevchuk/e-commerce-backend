@@ -1,21 +1,62 @@
+import type { DefaultResponse } from "../Types/Response";
 import { type ICart } from "../models/types/user";
-import CartRepository, { type Result } from "./cart.repository";
+import CartRepository from "./cart.repository";
 
 class CartService {
-    async get(): Promise<ICart | null> {
-        return await CartRepository.get();
+    async get(userId: string): Promise<DefaultResponse<ICart | null>> {
+        const cart = await CartRepository.get(userId);
+        return {
+            success: cart !== null,
+            data: cart
+        };
     }
 
-    async addCartItem(newCartProductId: string): Promise<ICart | null> {
-        return await CartRepository.addCartItem(newCartProductId);
+    async addCartItem(
+        newCartProductId: string,
+        userId: string
+    ): Promise<DefaultResponse<ICart | undefined>> {
+        const updatedCart = await CartRepository.addCartItem(newCartProductId, userId);
+        if (updatedCart === null) {
+            return {
+                success: false,
+                message: `Product with ID ${newCartProductId} doesn't exist`
+            };
+        }
+        return {
+            success: true,
+            data: updatedCart
+        };
     }
 
-    async removeOne(productId: string): Promise<ICart | null> {
-        return await CartRepository.removeOne(productId);
+    async removeOne(
+        productId: string,
+        userId: string
+    ): Promise<DefaultResponse<ICart | undefined>> {
+        const updatedCart = await CartRepository.removeOne(productId, userId);
+        if (updatedCart === null) {
+            return {
+                success: false,
+                message: `Product with id "${productId}" is not found!`
+            };
+        }
+        return {
+            success: true,
+            data: updatedCart
+        };
     }
 
-    async removeAll(): Promise<Result> {
-        return await CartRepository.removeAll();
+    async removeAll(userId: string): Promise<DefaultResponse<ICart | null | undefined>> {
+        const updatedCart = await CartRepository.removeAll(userId);
+        if (updatedCart === null) {
+            return {
+                success: false,
+                message: `Can't clear cart for user with ID: "${userId}"!`
+            };
+        }
+        return {
+            success: true,
+            data: updatedCart
+        };
     }
 }
 

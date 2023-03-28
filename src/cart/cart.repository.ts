@@ -4,19 +4,14 @@ import { type ICart } from "../models/types/user";
 
 export const userId = "641e3ba02ac6c35176b35490";
 
-export interface Result {
-    success: boolean;
-    errorMessage?: string;
-}
-
 class CartRepository {
-    async get(): Promise<ICart | null> {
+    async get(userId: string): Promise<ICart | null> {
         const user = await User.findById(userId).populate("cart.items.product");
         if (user != null) return user.cart;
         else return { items: [] };
     }
 
-    async addCartItem(newCartProductId: string): Promise<ICart | null> {
+    async addCartItem(newCartProductId: string, userId: string): Promise<ICart | null> {
         const user = await User.findById(userId);
         const existingProduct = await Product.findById(newCartProductId);
 
@@ -29,7 +24,7 @@ class CartRepository {
         else return updatedUser;
     }
 
-    async removeOne(productId: string): Promise<ICart | null> {
+    async removeOne(productId: string, userId: string): Promise<ICart | null> {
         const user = await User.findById(userId);
 
         if (user === null) return null;
@@ -41,12 +36,14 @@ class CartRepository {
         else return updatedUser;
     }
 
-    async removeAll(): Promise<Result> {
+    async removeAll(userId: string): Promise<ICart | null> {
         const user = await User.findById(userId);
         await user?.clearCart();
 
-        if (user !== null) return { success: true };
-        else return { success: false };
+        const updatedUser = await User.findById(userId).populate("cart.items.product");
+
+        if (updatedUser !== null) return updatedUser.cart;
+        else return updatedUser;
     }
 }
 
