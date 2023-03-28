@@ -13,13 +13,11 @@ class ShopController {
 
     getById: RequestHandler = async (request, response, next) => {
         try {
-            if (typeof request.query?.id === "string") {
-                const product = await Product.findById(request.query?.id);
-                response.status(200).json(product);
-            } else {
-                const products = await Product.find();
-                response.status(200).json(products);
-            }
+            const products = await Product.find();
+            const productExists = products !== null;
+            response
+                .status(productExists ? 200 : 404)
+                .json({ success: productExists, data: products });
         } catch (error) {
             next(error);
         }
