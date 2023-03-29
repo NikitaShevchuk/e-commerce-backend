@@ -7,8 +7,9 @@ import { checkAuthorization } from "../middleware/is-auth";
 import shopRoute from "./shop";
 import { doubleCsrfProtection, csrfErrorHandler } from "../security/csrf";
 import { errorHandler } from "../middleware/error";
+import imagesRoute from "./images";
 
-const APP_BASE_URL = "api";
+export const APP_BASE_URL = "api";
 
 const paths = {
     default: APP_BASE_URL,
@@ -17,7 +18,8 @@ const paths = {
     cart: `/${APP_BASE_URL}/cart`,
     order: `/${APP_BASE_URL}/order`,
     auth: `/${APP_BASE_URL}/auth`,
-    shop: `/${APP_BASE_URL}/product`
+    shop: `/${APP_BASE_URL}/product`,
+    images: `/${APP_BASE_URL}/image/product`
 };
 
 export const setupRoutes = (app: Application): void => {
@@ -30,9 +32,11 @@ export const setupRoutes = (app: Application): void => {
 
     // Private routes
     app.use(doubleCsrfProtection, csrfErrorHandler);
-    app.use(paths.admin, checkAuthorization, adminRoute);
-    app.use(paths.cart, checkAuthorization, cartRoute);
-    app.use(paths.order, checkAuthorization, orderRoute);
+    app.get(`/${paths.default}`, checkAuthorization);
+    app.use(paths.admin, adminRoute);
+    app.use(paths.cart, cartRoute);
+    app.use(paths.order, orderRoute);
+    app.use(paths.images, imagesRoute);
 
     app.use(errorHandler);
 };

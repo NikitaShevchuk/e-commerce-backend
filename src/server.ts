@@ -1,3 +1,4 @@
+import { filesPaths } from "./files-paths";
 import bodyParser from "body-parser";
 import cors from "cors";
 import { createSession } from "./security/session-options";
@@ -6,6 +7,8 @@ import { connectToDatabase } from "./database";
 import { setupRoutes } from "./routes/paths";
 import { cookieSecret, port } from "./environment-variables";
 import cookieParser from "cookie-parser";
+import multer from "multer";
+import { fileFilter, storage } from "./storage";
 
 export class ExpressServer {
     private readonly app: Application;
@@ -20,8 +23,13 @@ export class ExpressServer {
     }
 
     middleware(): void {
-        this.app.use(bodyParser.json());
+        filesPaths.forEach(({ url, path }) => {
+            this.app.use(url, express.static(path));
+        });
         this.app.use(cors());
+        this.app.use(bodyParser.json());
+        this.app.use(bodyParser.urlencoded({ extended: true }));
+        this.app.use(multer({ storage, fileFilter }).single("image"));
         this.app.use(createSession());
         this.app.use(cookieParser(cookieSecret));
     }

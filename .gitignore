@@ -1,5 +1,10 @@
 ### Node ###
 
+# Static files
+
+/public
+/static
+
 # Logs
 logs
 npm-debug.log*
