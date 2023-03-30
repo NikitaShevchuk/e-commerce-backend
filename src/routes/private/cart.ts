@@ -1,7 +1,7 @@
 import express from "express";
-import CartController from "../cart/cart.controller";
-import { validationErrorHandler } from "../middleware/validator";
-import { idParamValidator } from "../validators/id";
+import CartController from "../../cart/cart.controller";
+import { validationErrorHandler } from "../../middleware/validator";
+import { idParamValidator } from "../../validators/id";
 
 const cartRoute = express.Router();
 

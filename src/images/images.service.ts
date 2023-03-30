@@ -11,7 +11,7 @@ class ImagesService {
         }
         return {
             success: true,
-            data: { imageUrl: image.path }
+            data: { imageUrl: `/product/image/${image.filename}` }
         };
     }
 }

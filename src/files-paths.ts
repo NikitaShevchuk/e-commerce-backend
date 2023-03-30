@@ -1,5 +1,5 @@
 import path from "path";
-import { APP_BASE_URL } from "./routes/paths";
+import { APP_BASE_URL } from "./routes";
 
 interface FilePath {
     url: string;
@@ -8,7 +8,7 @@ interface FilePath {
 
 export const filesPaths: FilePath[] = [
     {
-        url: `${APP_BASE_URL}/api/product/image`,
+        url: `/${APP_BASE_URL}/product/image`,
         path: path.join(__dirname, "..", "..", "public", "images", "product")
     }
 ];

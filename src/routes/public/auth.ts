@@ -1,11 +1,11 @@
 import express from "express";
-import AuthController from "../auth/auth.controller";
-import { signupValidators } from "../validators/auth/signup";
-import { loginValidators } from "../validators/auth/login";
-import { validationErrorHandler } from "../middleware/validator";
-import { tokenValidators } from "../validators/auth/token";
-import { resetPasswordValidator } from "../validators/auth/reset-password";
-import { newPasswordValidators } from "../validators/auth/new-password";
+import AuthController from "../../auth/auth.controller";
+import { signupValidators } from "../../validators/auth/signup";
+import { loginValidators } from "../../validators/auth/login";
+import { validationErrorHandler } from "../../middleware/validator";
+import { tokenValidators } from "../../validators/auth/token";
+import { resetPasswordValidator } from "../../validators/auth/reset-password";
+import { newPasswordValidators } from "../../validators/auth/new-password";
 
 const authRoute = express.Router();
 

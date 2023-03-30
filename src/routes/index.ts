@@ -1,13 +1,13 @@
 import type { Application } from "express";
-import adminRoute from "./admin";
-import cartRoute from "./cart";
-import orderRoute from "./order";
-import authRoute from "./auth";
 import { checkAuthorization } from "../middleware/is-auth";
-import shopRoute from "./shop";
+import shopRoute from "./public/shop";
 import { doubleCsrfProtection, csrfErrorHandler } from "../security/csrf";
 import { errorHandler } from "../middleware/error";
-import imagesRoute from "./images";
+import adminRoute from "./private/admin";
+import cartRoute from "./private/cart";
+import orderRoute from "./private/order";
+import authRoute from "./public/auth";
+import productsImagesRoute from "./public/products-images";
 
 export const APP_BASE_URL = "api";
 
@@ -36,7 +36,7 @@ export const setupRoutes = (app: Application): void => {
     app.use(paths.admin, adminRoute);
     app.use(paths.cart, cartRoute);
     app.use(paths.order, orderRoute);
-    app.use(paths.images, imagesRoute);
+    app.use(paths.images, productsImagesRoute);
 
     app.use(errorHandler);
 };

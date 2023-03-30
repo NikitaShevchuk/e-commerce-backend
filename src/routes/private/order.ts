@@ -1,7 +1,7 @@
 import express from "express";
-import OrderController from "../order/order.controller";
-import { idParamValidator } from "../validators/id";
-import { validationErrorHandler } from "../middleware/validator";
+import OrderController from "../../order/order.controller";
+import { idParamValidator } from "../../validators/id";
+import { validationErrorHandler } from "../../middleware/validator";
 
 const orderRoute = express.Router();
 

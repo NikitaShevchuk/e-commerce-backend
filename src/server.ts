@@ -4,7 +4,7 @@ import cors from "cors";
 import { createSession } from "./security/session-options";
 import express, { type Application } from "express";
 import { connectToDatabase } from "./database";
-import { setupRoutes } from "./routes/paths";
+import { setupRoutes } from "./routes";
 import { cookieSecret, port } from "./environment-variables";
 import cookieParser from "cookie-parser";
 import multer from "multer";
