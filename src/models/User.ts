@@ -1,6 +1,7 @@
 import UserMethods from "./methods/user";
 import { Types, Schema, model } from "mongoose";
 import { type IUser, type UserModel, type IUserMethods, UserRoles } from "./types/user";
+import { sizesArray } from "../enums/cart";
 
 export const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
     {
@@ -27,6 +28,11 @@ export const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
                     quantity: {
                         type: Number,
                         required: true
+                    },
+                    selectedSize: {
+                        type: String,
+                        required: true,
+                        enum: sizesArray
                     }
                 }
             ]

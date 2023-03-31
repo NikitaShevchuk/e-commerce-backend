@@ -7,7 +7,7 @@ import adminRoute from "./private/admin";
 import cartRoute from "./private/cart";
 import orderRoute from "./private/order";
 import authRoute from "./public/auth";
-import productsImagesRoute from "./public/products-images";
+import productsImagesRoute from "./private/products-images";
 
 export const APP_BASE_URL = "api";
 

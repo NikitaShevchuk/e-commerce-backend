@@ -1,10 +1,15 @@
 import { type Types, type Model } from "mongoose";
+import type { NewCartItem } from "../methods/user";
+import type { Sizes } from "./product";
+
+export interface ICartItem {
+    product: Types.ObjectId;
+    quantity: number;
+    selectedSize: string;
+}
 
 export interface ICart {
-    items: Array<{
-        product: Types.ObjectId;
-        quantity: number;
-    }>;
+    items: ICartItem[];
 }
 
 export interface IUser {
@@ -19,8 +24,8 @@ export interface IUser {
 }
 
 export interface IUserMethods extends IUser {
-    addToCart: (newCartItemId: string) => Promise<void>;
-    removeOne: (productId: string) => Promise<void>;
+    addToCart: (newCartItem: NewCartItem) => Promise<void>;
+    removeOne: (productId: string, size: Sizes) => Promise<void>;
     clearCart: () => Promise<void>;
 }
 

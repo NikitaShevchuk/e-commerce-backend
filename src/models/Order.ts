@@ -6,7 +6,7 @@ export const OrderSchema = new Schema<IOrder, OrderModel, IOrderMethods>(
     {
         products: [
             {
-                type: { product: ProductSchema, quantity: Number },
+                type: { product: ProductSchema, quantity: Number, selectedSize: String },
                 required: true
             }
         ],

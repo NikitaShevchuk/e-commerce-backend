@@ -14,7 +14,7 @@ const validationErrors = {
 
 export const productValidators = [
     body("title", validationErrors.title).trim().isString().isLength({ min: 3, max: 255 }),
-    body("image", validationErrors.image).trim().isURL(),
+    body("image", validationErrors.image).optional().trim(),
     body("price", validationErrors.price).trim().isFloat(),
     body("description", validationErrors.description)
         .trim()

@@ -1,5 +1,7 @@
 import type { RequestHandler } from "express";
 import CartService from "./cart.service";
+import type { NewCartItem } from "../models/methods/user";
+import type { Sizes } from "../models/types/product";
 
 class CartController {
     get: RequestHandler = async (request, response, next) => {
@@ -13,10 +15,7 @@ class CartController {
 
     addCartItem: RequestHandler = async (request, response, next) => {
         try {
-            const result = await CartService.addCartItem(
-                request.params.id,
-                request.session?.user._id
-            );
+            const result = await CartService.addCartItem(request.body, request.session?.user._id);
             response.status(result.success ? 200 : 404).json(result);
         } catch (error) {
             next(error);
@@ -24,9 +23,13 @@ class CartController {
     };
 
     removeOne: RequestHandler = async (request, response, next) => {
+        const cartItemToRemove: NewCartItem = {
+            productId: request.params.id,
+            size: request.params.size as Sizes
+        };
         try {
             const updatedCart = await CartService.removeOne(
-                request.params.id,
+                cartItemToRemove,
                 request.session?.user._id
             );
             response.status(200).json(updatedCart);

@@ -1,8 +1,7 @@
 import Product from "../models/Product";
 import User from "../models/User";
 import { type ICart } from "../models/types/user";
-
-export const userId = "641e3ba02ac6c35176b35490";
+import type { NewCartItem } from "../models/methods/user";
 
 class CartRepository {
     async get(userId: string): Promise<ICart | null> {
@@ -11,25 +10,23 @@ class CartRepository {
         else return { items: [] };
     }
 
-    async addCartItem(newCartProductId: string, userId: string): Promise<ICart | null> {
+    async addCartItem(newCartItem: NewCartItem, userId: string): Promise<ICart | null> {
         const user = await User.findById(userId);
-        const existingProduct = await Product.findById(newCartProductId);
-
+        const existingProduct = await Product.findById(newCartItem.productId);
         if (existingProduct === null || user === null) return null;
 
-        await user.addToCart(newCartProductId);
+        await user.addToCart(newCartItem);
         const updatedUser = await User.findById(userId).populate("cart.items.product");
 
         if (updatedUser !== null) return updatedUser.cart;
         else return updatedUser;
     }
 
-    async removeOne(productId: string, userId: string): Promise<ICart | null> {
+    async removeOne(cartItemToRemove: NewCartItem, userId: string): Promise<ICart | null> {
         const user = await User.findById(userId);
+        if (user === null) return user;
 
-        if (user === null) return null;
-
-        await user.removeOne(productId);
+        await user.removeOne(cartItemToRemove.productId, cartItemToRemove.size);
         const updatedUser = await User.findById(userId).populate("cart.items.product");
 
         if (updatedUser !== null) return updatedUser.cart;

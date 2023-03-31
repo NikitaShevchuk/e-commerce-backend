@@ -35,8 +35,7 @@ export const ProductSchema = new mongoose.Schema<IProduct, mongoose.Model<IProdu
             required: true
         },
         image: {
-            type: String,
-            required: true
+            type: String
         },
         color: {
             type: String,

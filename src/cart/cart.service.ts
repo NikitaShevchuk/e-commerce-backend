@@ -1,4 +1,5 @@
 import type { DefaultResponse } from "../Types/Response";
+import type { NewCartItem } from "../models/methods/user";
 import { type ICart } from "../models/types/user";
 import CartRepository from "./cart.repository";
 
@@ -12,14 +13,14 @@ class CartService {
     }
 
     async addCartItem(
-        newCartProductId: string,
+        newCartItem: NewCartItem,
         userId: string
     ): Promise<DefaultResponse<ICart | undefined>> {
-        const updatedCart = await CartRepository.addCartItem(newCartProductId, userId);
+        const updatedCart = await CartRepository.addCartItem(newCartItem, userId);
         if (updatedCart === null) {
             return {
                 success: false,
-                message: `Product with ID ${newCartProductId} doesn't exist`
+                message: `Product with ID ${String(newCartItem.productId)} doesn't exist`
             };
         }
         return {
@@ -29,14 +30,14 @@ class CartService {
     }
 
     async removeOne(
-        productId: string,
+        cartItemToRemove: NewCartItem,
         userId: string
     ): Promise<DefaultResponse<ICart | undefined>> {
-        const updatedCart = await CartRepository.removeOne(productId, userId);
+        const updatedCart = await CartRepository.removeOne(cartItemToRemove, userId);
         if (updatedCart === null) {
             return {
                 success: false,
-                message: `Product with id "${productId}" is not found!`
+                message: `Product with id "${String(cartItemToRemove.productId)}" is not found!`
             };
         }
         return {

@@ -1,3 +1,4 @@
+import fs from "fs";
 import type { IProduct } from "../models/types/product";
 import Product from "../models/Product";
 import User from "../models/User";
@@ -25,11 +26,24 @@ class AdminProductsRepository {
     }
 
     async update(id: string, updatedProduct: IProduct, userId: string): Promise<IProduct | null> {
+        if (updatedProduct.image === undefined) {
+            const oldProduct = await Product.findOne({ _id: id, userId });
+            if (oldProduct !== null) updatedProduct.image = oldProduct.image;
+        } else {
+            fs.unlink(updatedProduct.image, (error) => {
+                console.log(error);
+            });
+        }
         await Product.findOneAndUpdate({ _id: id, userId }, updatedProduct);
         return await Product.findOne({ _id: id, userId });
     }
 
     async delete(id: string, userId: string): Promise<IProduct | null> {
+        const productToDelete = await Product.findOne({ _id: id, userId });
+        if (productToDelete !== null)
+            fs.unlink(productToDelete.image, (error) => {
+                console.log(error);
+            });
         return await Product.findOneAndDelete({ _id: id, userId });
     }
 }

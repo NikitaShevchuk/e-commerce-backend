@@ -1,5 +1,12 @@
 import mongoose from "mongoose";
 import { UserSchema } from "../User";
+import type { Sizes } from "../types/product";
+import type { ICartItem } from "../types/user";
+
+export interface NewCartItem {
+    productId: string;
+    size: Sizes;
+}
 
 class UserMethods {
     public createAll(): void {
@@ -9,10 +16,12 @@ class UserMethods {
     }
 
     private createAddToCart(): void {
-        UserSchema.methods.addToCart = async function (newCartItemId: string) {
-            const cartProductIndex = this.cart.items.findIndex((cartProduct) => {
-                return String(cartProduct.product) === String(newCartItemId);
-            });
+        UserSchema.methods.addToCart = async function (newCartItem: NewCartItem) {
+            const cartProductIndex = this.cart.items.findIndex(
+                (cartProduct) =>
+                    String(cartProduct.product) === String(newCartItem.productId) &&
+                    String(newCartItem.size) === String(cartProduct.selectedSize)
+            );
 
             const updatedCartItems = [...this.cart.items];
 
@@ -20,11 +29,12 @@ class UserMethods {
                 const newQuantity = Number(this.cart.items[cartProductIndex].quantity) + 1;
                 updatedCartItems[cartProductIndex].quantity = newQuantity;
             } else {
-                const newCartItem = {
-                    product: new mongoose.Types.ObjectId(newCartItemId),
-                    quantity: 1
+                const newCartProduct: ICartItem = {
+                    product: new mongoose.Types.ObjectId(newCartItem.productId),
+                    quantity: 1,
+                    selectedSize: newCartItem.size
                 };
-                updatedCartItems.push(newCartItem);
+                updatedCartItems.push(newCartProduct);
             }
 
             this.cart = { items: updatedCartItems };
@@ -33,9 +43,10 @@ class UserMethods {
     }
 
     private createRemoveFromCart(): void {
-        UserSchema.methods.removeOne = async function (productId: string) {
+        UserSchema.methods.removeOne = async function (productId: string, size: Sizes) {
             this.cart.items = this.cart.items.filter(
-                ({ product }) => String(product) !== productId
+                ({ product, selectedSize }) =>
+                    String(product) !== productId && selectedSize !== size
             );
             await this.save();
         };
