@@ -32,11 +32,10 @@ export const setupRoutes = (app: Application): void => {
 
     // Private routes
     app.use(doubleCsrfProtection, csrfErrorHandler);
-    app.get(`/${paths.default}`, checkAuthorization);
-    app.use(paths.admin, adminRoute);
-    app.use(paths.cart, cartRoute);
-    app.use(paths.order, orderRoute);
-    app.use(paths.images, productsImagesRoute);
+    app.use(paths.admin, checkAuthorization, adminRoute);
+    app.use(paths.cart, checkAuthorization, cartRoute);
+    app.use(paths.order, checkAuthorization, orderRoute);
+    app.use(paths.images, checkAuthorization, productsImagesRoute);
 
     app.use(errorHandler);
 };

@@ -24,6 +24,10 @@ class OrderRepository {
     async removeOne(orderId: string, userId: string): Promise<IOrder | null> {
         return await Order.findOneAndRemove({ _id: orderId, user: userId });
     }
+
+    async getById(orderId: string, userId: string): Promise<IOrder | null> {
+        return await Order.findOne({ _id: orderId, userId });
+    }
 }
 
 export default new OrderRepository();

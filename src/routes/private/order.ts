@@ -16,11 +16,6 @@ orderRoute.get(
     validationErrorHandler,
     InvoiceController.download
 );
-orderRoute.post(
-    "/invoice/:id",
-    [idParamValidator],
-    validationErrorHandler,
-    InvoiceController.upload
-);
+orderRoute.post("/invoice/:id", [idParamValidator], validationErrorHandler);
 
 export default orderRoute;
