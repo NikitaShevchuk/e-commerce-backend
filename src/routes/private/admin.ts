@@ -4,6 +4,8 @@ import { productValidators } from "../../validators/product/product";
 import { validationErrorHandler } from "../../middleware/validator";
 import { idParamValidator } from "../../validators/id";
 import { titleQueryValidator } from "../../validators/product/title";
+import { categoryValidators } from "../../validators/category/category";
+import CategoryController from "../../controllers/category/category.controller";
 
 const adminRoute = express.Router();
 
@@ -38,5 +40,7 @@ adminRoute.delete(
     validationErrorHandler,
     AdminProductsController.delete
 );
+
+adminRoute.post("/category", categoryValidators, validationErrorHandler, CategoryController.create);
 
 export default adminRoute;

@@ -18,7 +18,7 @@ const paths = {
     cart: `/${APP_BASE_URL}/cart`,
     order: `/${APP_BASE_URL}/order`,
     auth: `/${APP_BASE_URL}/auth`,
-    shop: `/${APP_BASE_URL}/product`,
+    shop: `/${APP_BASE_URL}`,
     images: `/${APP_BASE_URL}/image/product`
 };
 
