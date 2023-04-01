@@ -1,18 +1,15 @@
 import * as mongoose from "mongoose";
-import { type IProduct } from "./types/product";
+import { type ICategory } from "./types/category";
 import { sizesArray } from "../enums/cart";
+import { colorsArray } from "../enums/category";
 
-export const ProductSchema = new mongoose.Schema<IProduct, mongoose.Model<IProduct>, IProduct>(
+export const CategorySchema = new mongoose.Schema<ICategory, mongoose.Model<ICategory>, ICategory>(
     {
         title: {
             type: String,
             required: true,
             maxLength: 100,
             minlength: 3
-        },
-        price: {
-            type: Number,
-            required: true
         },
         description: {
             type: String,
@@ -27,22 +24,12 @@ export const ProductSchema = new mongoose.Schema<IProduct, mongoose.Model<IProdu
                 }
             ]
         },
-        isFavorite: {
-            type: Boolean,
-            required: true
-        },
-        productIsNew: {
-            type: Boolean,
-            required: true
-        },
         image: {
             type: String
         },
-        color: {
-            type: String,
-            required: true,
-            maxLength: 50,
-            minlength: 3
+        colors: {
+            type: [{ type: String, enum: colorsArray }],
+            required: true
         },
         userId: {
             type: mongoose.Types.ObjectId,
@@ -50,8 +37,8 @@ export const ProductSchema = new mongoose.Schema<IProduct, mongoose.Model<IProdu
             required: true
         }
     },
-    { collection: "Products" }
+    { collection: "Categories" }
 );
 
-export default mongoose.model("Product", ProductSchema);
-export type ProductSchemaType = typeof ProductSchema;
+export default mongoose.model("Category", CategorySchema);
+export type CategorySchemaType = typeof CategorySchema;

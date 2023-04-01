@@ -3,7 +3,7 @@ import type { Types } from "mongoose";
 export enum Sizes {
     XS = "XS",
     S = "S",
-    MD = "MD",
+    M = "M",
     L = "L",
     XL = "XL"
 }
