@@ -1,14 +1,10 @@
 import type { RequestHandler } from "express";
-import ShopService from "./category.service";
+import CategoryService from "./category.service";
 
-class ShopController {
+class CategoryController {
     getAll: RequestHandler = async (request, response, next) => {
         try {
-            const result = await ShopService.getAll(
-                request.query.page as string,
-                request.query.limit as string,
-                request.query.title as string
-            );
+            const result = await CategoryService.getAll(request.query.page as string);
             response.status(result.success ? 200 : 500).json(result);
         } catch (error) {
             next(error);
@@ -17,7 +13,7 @@ class ShopController {
 
     getById: RequestHandler = async (request, response, next) => {
         try {
-            const result = await ShopService.getById(request.params.id);
+            const result = await CategoryService.getById(request.params.id);
             response.status(result.success ? 200 : 404).json(result);
         } catch (error) {
             next(error);
@@ -25,4 +21,4 @@ class ShopController {
     };
 }
 
-export default new ShopController();
+export default new CategoryController();
