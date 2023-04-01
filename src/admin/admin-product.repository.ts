@@ -40,10 +40,13 @@ class AdminProductsRepository {
 
     async delete(id: string, userId: string): Promise<IProduct | null> {
         const productToDelete = await Product.findOne({ _id: id, userId });
-        if (productToDelete !== null)
-            fs.unlink(productToDelete.image, (error) => {
+        if (typeof productToDelete?.image === "string") {
+            try {
+                fs.unlink(productToDelete.image, () => {});
+            } catch (error) {
                 console.log(error);
-            });
+            }
+        }
         return await Product.findOneAndDelete({ _id: id, userId });
     }
 }

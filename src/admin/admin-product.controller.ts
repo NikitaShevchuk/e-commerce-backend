@@ -4,11 +4,11 @@ import AdminProductService from "./admin-product.service";
 class AdminProductsController {
     create: RequestHandler = async (request, response, next) => {
         try {
-            const product = await AdminProductService.create(
+            const result = await AdminProductService.create(
                 request.body,
                 request.session?.user?._id
             );
-            response.status(201).json(product);
+            response.status(result.success ? 201 : 422).json(result);
         } catch (error) {
             next(error);
         }
@@ -16,8 +16,8 @@ class AdminProductsController {
 
     getAll: RequestHandler = async (request, response, next) => {
         try {
-            const product = await AdminProductService.getAll(request.session?.user?._id);
-            response.status(200).json(product);
+            const result = await AdminProductService.getAll(request.session?.user?._id);
+            response.status(result.success ? 200 : 404).json(result);
         } catch (error) {
             next(error);
         }
@@ -25,11 +25,11 @@ class AdminProductsController {
 
     getById: RequestHandler = async (request, response, next) => {
         try {
-            const product = await AdminProductService.getById(
+            const result = await AdminProductService.getById(
                 request.params.id,
                 request.session?.user?._id
             );
-            response.status(200).json(product);
+            response.status(result.success ? 200 : 404).json(result);
         } catch (error) {
             next(error);
         }
@@ -37,11 +37,11 @@ class AdminProductsController {
 
     getByTitle: RequestHandler = async (request, response, next) => {
         try {
-            const product = await AdminProductService.getByTitle(
+            const result = await AdminProductService.getByTitle(
                 request.params.title,
                 request.session?.user?._id
             );
-            response.status(200).json(product);
+            response.status(result.success ? 200 : 404).json(result);
         } catch (error) {
             next(error);
         }
@@ -49,12 +49,12 @@ class AdminProductsController {
 
     update: RequestHandler = async (request, response, next) => {
         try {
-            const product = await AdminProductService.update(
+            const result = await AdminProductService.update(
                 request.params.id,
                 request.body,
                 request.session?.user?._id
             );
-            response.status(200).json(product);
+            response.status(result.success ? 200 : 422).json(result);
         } catch (error) {
             next(error);
         }
@@ -62,11 +62,11 @@ class AdminProductsController {
 
     delete: RequestHandler = async (request, response, next) => {
         try {
-            const product = await AdminProductService.delete(
+            const result = await AdminProductService.delete(
                 request.params.id,
                 request.session?.user?._id
             );
-            response.status(200).json(product);
+            response.status(result.success ? 200 : 404).json(result);
         } catch (error) {
             next(error);
         }
