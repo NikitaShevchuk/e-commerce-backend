@@ -14,9 +14,9 @@ class AdminProductsRepository {
         return await Product.find({ userId }).populate("userId", ["name", "email", "role"], User);
     }
 
-    async getByTitle(name: string, userId: string): Promise<IProduct | null> {
+    async getByTitle(title: string, userId: string): Promise<IProduct | null> {
         return await Product.findOne({
-            name: { $regex: `/${name}/i` },
+            title: { $regex: `/${title}/i` },
             userId
         });
     }
