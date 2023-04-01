@@ -1,4 +1,4 @@
-import type { DefaultResponse } from "./../Types/Response";
+import type { DefaultResponse } from "./../../Types/Response";
 class ImagesService {
     async uploadProductImage(
         image: Express.Multer.File | undefined

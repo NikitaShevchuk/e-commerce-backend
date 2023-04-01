@@ -1,5 +1,5 @@
 import express from "express";
-import ShopController from "../../shop/shop.controller";
+import ShopController from "../../controllers/shop/shop.controller";
 import { validationErrorHandler } from "../../middleware/validator";
 import { idParamValidator } from "../../validators/id";
 import { titleQueryValidator } from "../../validators/product/title";

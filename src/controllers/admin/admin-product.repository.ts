@@ -1,7 +1,7 @@
 import fs from "fs";
-import type { IProduct } from "../models/types/product";
-import Product from "../models/Product";
-import User from "../models/User";
+import type { IProduct } from "../../models/types/product";
+import Product from "../../models/Product";
+import User from "../../models/User";
 
 class AdminProductsRepository {
     async create(newProduct: IProduct): Promise<IProduct> {

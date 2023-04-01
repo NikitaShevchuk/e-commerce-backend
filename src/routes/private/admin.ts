@@ -1,5 +1,5 @@
 import express from "express";
-import AdminProductsController from "../../admin/admin-product.controller";
+import AdminProductsController from "../../controllers/admin/admin-product.controller";
 import { productValidators } from "../../validators/product/product";
 import { validationErrorHandler } from "../../middleware/validator";
 import { idParamValidator } from "../../validators/id";

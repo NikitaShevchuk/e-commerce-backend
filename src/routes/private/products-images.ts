@@ -1,5 +1,5 @@
 import express from "express";
-import ImagesController from "../../images/images.controller";
+import ImagesController from "../../controllers/images/images.controller";
 
 const productsImagesRoute = express.Router();
 

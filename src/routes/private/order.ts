@@ -1,8 +1,8 @@
 import express from "express";
-import OrderController from "../../order/order.controller";
+import OrderController from "../../controllers/order/order.controller";
 import { idParamValidator } from "../../validators/id";
 import { validationErrorHandler } from "../../middleware/validator";
-import InvoiceController from "../../order/invoice/invoice.controller";
+import InvoiceController from "../../controllers/order/invoice/invoice.controller";
 
 const orderRoute = express.Router();
 

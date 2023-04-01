@@ -1,6 +1,6 @@
 import { getProductsAndUser } from "./utils/getProductsAndUser";
-import Order from "../models/Order";
-import { type IOrder, OrderStatus } from "../models/types/order";
+import Order from "../../models/Order";
+import { type IOrder, OrderStatus } from "../../models/types/order";
 
 class OrderRepository {
     async get(userId: string): Promise<IOrder[]> {

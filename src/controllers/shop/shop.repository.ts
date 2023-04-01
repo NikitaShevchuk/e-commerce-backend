@@ -1,7 +1,7 @@
-import type { Pagination } from "../Types/Pagination";
-import Product from "../models/Product";
-import type { IProduct } from "../models/types/product";
-import { getSkipAmount } from "../utils/pagination";
+import type { Pagination } from "../../Types/Pagination";
+import Product from "../../models/Product";
+import type { IProduct } from "../../models/types/product";
+import { getSkipAmount } from "../../utils/pagination";
 
 class ShopRepository {
     async getAll(page: string, limit: string): Promise<Pagination<IProduct[] | null>> {
