@@ -1,6 +1,7 @@
 import type { DefaultResponse } from "../Types/Response";
 import type { NewCartItem } from "../models/methods/user";
 import { type ICart } from "../models/types/user";
+import { createErrorResult } from "../utils/result";
 import CartRepository from "./cart.repository";
 
 class CartService {
@@ -17,12 +18,9 @@ class CartService {
         userId: string
     ): Promise<DefaultResponse<ICart | undefined>> {
         const updatedCart = await CartRepository.addCartItem(newCartItem, userId);
-        if (updatedCart === null) {
-            return {
-                success: false,
-                message: `Product with ID ${String(newCartItem.productId)} doesn't exist`
-            };
-        }
+        const productId = newCartItem.productId;
+        if (updatedCart === null)
+            return createErrorResult(`Product with ID ${productId} doesn't exist`);
         return {
             success: true,
             data: updatedCart
@@ -34,12 +32,9 @@ class CartService {
         userId: string
     ): Promise<DefaultResponse<ICart | undefined>> {
         const updatedCart = await CartRepository.removeOne(cartItemToRemove, userId);
-        if (updatedCart === null) {
-            return {
-                success: false,
-                message: `Product with id "${String(cartItemToRemove.productId)}" is not found!`
-            };
-        }
+        const productId = cartItemToRemove.productId;
+        if (updatedCart === null)
+            return createErrorResult(`Cart item with id "${productId}" is not found!`);
         return {
             success: true,
             data: updatedCart
@@ -48,12 +43,8 @@ class CartService {
 
     async removeAll(userId: string): Promise<DefaultResponse<ICart | null | undefined>> {
         const updatedCart = await CartRepository.removeAll(userId);
-        if (updatedCart === null) {
-            return {
-                success: false,
-                message: `Can't clear cart for user with ID: "${userId}"!`
-            };
-        }
+        if (updatedCart === null)
+            return createErrorResult(`Can't clear cart for user with ID: "${userId}"!`);
         return {
             success: true,
             data: updatedCart
