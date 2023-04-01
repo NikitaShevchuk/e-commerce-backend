@@ -1,5 +1,5 @@
 import fs from "fs";
-import type { IOrder } from "../../models/types/order";
+import type { IOrder } from "../../../models/types/order";
 import path from "path";
 import PDFDocument from "pdfkit";
 import type { Response } from "express";

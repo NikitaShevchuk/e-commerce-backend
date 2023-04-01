@@ -1,7 +1,7 @@
 import type { DefaultResponse } from "../../Types/Response";
 import type { IProduct } from "../../models/types/product";
 import { getResultWithPagination } from "../../utils/result-with-pagination";
-import ShopRepository from "./shop.repository";
+import ShopRepository from "./category.repository";
 
 class ShopService {
     async getAll(

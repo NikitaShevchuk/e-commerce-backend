@@ -1,6 +1,6 @@
-import type { DefaultResponse } from "../Types/Response";
-import { type IOrder } from "../models/types/order";
-import { createErrorResult } from "../utils/result";
+import type { DefaultResponse } from "../../Types/Response";
+import { type IOrder } from "../../models/types/order";
+import { createErrorResult } from "../../utils/result";
 import OrderRepository from "./order.repository";
 
 class OrderService {
