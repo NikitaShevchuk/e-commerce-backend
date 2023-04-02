@@ -46,7 +46,6 @@ export class StorageOptions {
 
     private createPath(directory: string): string {
         const filePath = path.join(this.PUBLIC_PATH, directory);
-        console.log(filePath);
         fs.mkdirSync(filePath, { recursive: true });
         return filePath;
     }

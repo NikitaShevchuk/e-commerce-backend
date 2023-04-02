@@ -2,11 +2,8 @@ import express from "express";
 import ImagesController from "../../controllers/images/images.controller";
 import { imageUploadErrorHandler } from "../../middleware/image-error";
 import CustomStorage from "../../storage/CustomStorage";
-import type { FileField } from "../../storage/StorageOptions";
 
-const imagesRoute = express.Router();
-
-const fields: Record<string, FileField> = {
+const fields = {
     productImage: {
         name: "productImage",
         path: "images/product"
@@ -16,8 +13,9 @@ const fields: Record<string, FileField> = {
         path: "images/category"
     }
 };
-
 CustomStorage.addFields([fields.productImage, fields.categoryImage]);
+
+const imagesRoute = express.Router();
 
 imagesRoute.post(
     "/product",
