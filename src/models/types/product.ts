@@ -19,4 +19,5 @@ export interface IProduct extends Document {
     image: string;
     color: string;
     userId: Types.ObjectId | undefined | string;
+    category: Types.ObjectId | undefined | string;
 }

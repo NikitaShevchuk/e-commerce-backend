@@ -48,6 +48,11 @@ export const ProductSchema = new mongoose.Schema<IProduct, mongoose.Model<IProdu
             type: mongoose.Types.ObjectId,
             ref: "User",
             required: true
+        },
+        category: {
+            type: mongoose.Types.ObjectId,
+            ref: "Category",
+            required: true
         }
     },
     { collection: "Products" }
