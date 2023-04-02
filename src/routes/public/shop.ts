@@ -5,12 +5,13 @@ import { idParamValidator } from "../../validators/id";
 import { titleQueryValidator } from "../../validators/product/title";
 import { paginationParamsValidators } from "../../validators/product/pagination";
 import CategoryController from "../../controllers/category/category.controller";
+import { categoryIdValidator } from "../../validators/category/id";
 
 const shopRoute = express.Router();
 
 shopRoute.get(
     "/product",
-    [...paginationParamsValidators, titleQueryValidator],
+    [...paginationParamsValidators, titleQueryValidator, categoryIdValidator],
     validationErrorHandler,
     ShopController.getAll
 );

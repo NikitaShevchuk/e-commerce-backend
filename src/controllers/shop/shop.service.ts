@@ -8,12 +8,10 @@ class ShopService {
     async getAll(
         page = "1",
         limit = "20",
-        title?: string
+        title?: string,
+        categoryId?: string
     ): Promise<DefaultResponse<IProduct[] | undefined>> {
-        const titleExists = typeof title === "string";
-        const { data, total } = titleExists
-            ? await ShopRepository.findByTitle(title, page, limit)
-            : await ShopRepository.getAll(page, limit);
+        const { data, total } = await ShopRepository.getAll(page, limit, categoryId, title);
         if (data === null) return createErrorResult("An error occurred while getting all products");
         return getResultWithPagination(data, total, page, limit);
     }

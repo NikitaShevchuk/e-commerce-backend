@@ -7,7 +7,8 @@ class ShopController {
             const result = await ShopService.getAll(
                 request.query.page as string,
                 request.query.limit as string,
-                request.query.title as string
+                request.query.title as string,
+                request.query.categoryId as string
             );
             response.status(result.success ? 200 : 500).json(result);
         } catch (error) {
