@@ -7,19 +7,19 @@ import adminRoute from "./private/admin";
 import cartRoute from "./private/cart";
 import orderRoute from "./private/order";
 import authRoute from "./public/auth";
-import productsImagesRoute from "./private/products-images";
+import imagesRoute from "./private/images";
 
 export const APP_BASE_URL = "api";
 
 const paths = {
     default: APP_BASE_URL,
+    shop: `/${APP_BASE_URL}`,
     admin: `/${APP_BASE_URL}/admin`,
     product: `/${APP_BASE_URL}/product`,
     cart: `/${APP_BASE_URL}/cart`,
     order: `/${APP_BASE_URL}/order`,
     auth: `/${APP_BASE_URL}/auth`,
-    shop: `/${APP_BASE_URL}`,
-    images: `/${APP_BASE_URL}/image/product`
+    images: `/${APP_BASE_URL}/image`
 };
 
 export const setupRoutes = (app: Application): void => {
@@ -35,7 +35,7 @@ export const setupRoutes = (app: Application): void => {
     app.use(paths.admin, checkAuthorization, adminRoute);
     app.use(paths.cart, checkAuthorization, cartRoute);
     app.use(paths.order, checkAuthorization, orderRoute);
-    app.use(paths.images, checkAuthorization, productsImagesRoute);
+    app.use(paths.images, checkAuthorization, imagesRoute);
 
     app.use(errorHandler);
 };

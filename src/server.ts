@@ -7,8 +7,6 @@ import { connectToDatabase } from "./database";
 import { setupRoutes } from "./routes";
 import { cookieSecret, port } from "./environment-variables";
 import cookieParser from "cookie-parser";
-import multer from "multer";
-import { fileFilter, storage } from "./storage";
 
 export class ExpressServer {
     private readonly app: Application;
@@ -29,7 +27,6 @@ export class ExpressServer {
         this.app.use(cors());
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: true }));
-        this.app.use(multer({ storage, fileFilter }).single("image"));
         this.app.use(createSession());
         this.app.use(cookieParser(cookieSecret));
     }

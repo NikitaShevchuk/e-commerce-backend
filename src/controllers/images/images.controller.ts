@@ -10,6 +10,15 @@ class ImagesController {
             next(error);
         }
     };
+
+    uploadCategoryImage: RequestHandler = async (request, response, next) => {
+        try {
+            const result = await ImagesService.uploadCategoryImage(request.file);
+            response.status(result.success ? 200 : 422).json(result);
+        } catch (error) {
+            next(error);
+        }
+    };
 }
 
 export default new ImagesController();

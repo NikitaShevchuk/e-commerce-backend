@@ -1,17 +1,31 @@
 import type { DefaultResponse } from "./../../Types/Response";
+
 class ImagesService {
+    private readonly invalidImageError: DefaultResponse<undefined>;
+    constructor() {
+        this.invalidImageError = {
+            success: false,
+            message: "Image is not valid."
+        };
+    }
+
     async uploadProductImage(
-        image: Express.Multer.File | undefined
-    ): Promise<DefaultResponse<{ imageUrl: string }>> {
-        if (image === undefined) {
-            return {
-                success: false,
-                message: "Product image is not valid."
-            };
-        }
+        productImage: Express.Multer.File | undefined
+    ): Promise<DefaultResponse<{ imageUrl: string } | undefined>> {
+        if (productImage === undefined) return this.invalidImageError;
         return {
             success: true,
-            data: { imageUrl: `/product/image/${image.filename}` }
+            data: { imageUrl: `/product/image/${productImage.filename}` }
+        };
+    }
+
+    async uploadCategoryImage(
+        categoryImage: Express.Multer.File | undefined
+    ): Promise<DefaultResponse<{ imageUrl: string } | undefined>> {
+        if (categoryImage === undefined) return this.invalidImageError;
+        return {
+            success: true,
+            data: { imageUrl: `/category/image/${categoryImage.filename}` }
         };
     }
 }
