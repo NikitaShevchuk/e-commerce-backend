@@ -15,7 +15,8 @@ export const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
             type: String,
             required: true,
             maxLength: 100,
-            minlength: 3
+            minlength: 3,
+            trim: true
         },
         cart: {
             items: [
@@ -44,7 +45,10 @@ export const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
         },
         password: {
             type: String,
-            required: true
+            required: true,
+            trim: true,
+            minlength: 8,
+            maxLength: 24
         },
         resetToken: String,
         resetTokenExpiration: Date
