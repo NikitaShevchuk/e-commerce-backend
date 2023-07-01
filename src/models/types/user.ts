@@ -24,7 +24,7 @@ export interface IUser {
 }
 
 export interface IUserMethods extends IUser {
-    addToCart: (newCartItem: NewCartItem) => Promise<void>;
+    addToCart: (newCartItem: NewCartItem) => Promise<ICartItem>;
     removeOne: (productId: string, size: Sizes) => Promise<void>;
     clearCart: () => Promise<void>;
 }

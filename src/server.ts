@@ -24,7 +24,7 @@ export class ExpressServer {
         filesPaths.forEach(({ url, path }) => {
             this.app.use(url, express.static(path));
         });
-        this.app.use(cors());
+        this.app.use(cors({ origin: "http://localhost:3000", credentials: true }));
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(createSession());

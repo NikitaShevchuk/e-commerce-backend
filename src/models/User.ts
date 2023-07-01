@@ -48,7 +48,7 @@ export const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
             required: true,
             trim: true,
             minlength: 8,
-            maxLength: 24
+            maxLength: 256
         },
         resetToken: String,
         resetTokenExpiration: Date

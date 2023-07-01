@@ -1,6 +1,6 @@
-import type { DefaultResponse } from "../../Types/Response";
-import { createErrorResult } from "../../utils/result";
-import type { IProduct } from "../../models/types/product";
+import type { DefaultResponse } from "../Types/Response";
+import { createErrorResult } from "../utils/result";
+import type { IProduct } from "../models/types/product";
 import AdminProductRepository from "./admin-product.repository";
 
 class AdminProductsService {

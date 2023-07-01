@@ -16,7 +16,11 @@ class UserMethods {
     }
 
     private createAddToCart(): void {
-        UserSchema.methods.addToCart = async function (newCartItem: NewCartItem) {
+        UserSchema.methods.addToCart = async function (
+            newCartItem: NewCartItem
+        ): Promise<ICartItem> {
+            let result: ICartItem;
+
             const cartProductIndex = this.cart.items.findIndex(
                 (cartProduct) =>
                     String(cartProduct.product) === String(newCartItem.productId) &&
@@ -28,6 +32,7 @@ class UserMethods {
             if (cartProductIndex >= 0) {
                 const newQuantity = Number(this.cart.items[cartProductIndex].quantity) + 1;
                 updatedCartItems[cartProductIndex].quantity = newQuantity;
+                result = updatedCartItems[cartProductIndex];
             } else {
                 const newCartProduct: ICartItem = {
                     product: new mongoose.Types.ObjectId(newCartItem.productId),
@@ -35,10 +40,13 @@ class UserMethods {
                     selectedSize: newCartItem.size
                 };
                 updatedCartItems.push(newCartProduct);
+                result = newCartProduct;
             }
 
             this.cart = { items: updatedCartItems };
             await this.save();
+
+            return result;
         };
     }
 

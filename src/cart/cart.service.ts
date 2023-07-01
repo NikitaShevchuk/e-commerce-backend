@@ -1,6 +1,6 @@
 import type { DefaultResponse } from "../Types/Response";
 import type { NewCartItem } from "../models/methods/user";
-import { type ICart } from "../models/types/user";
+import { type ICartItem, type ICart } from "../models/types/user";
 import { createErrorResult } from "../utils/result";
 import CartRepository from "./cart.repository";
 
@@ -16,7 +16,7 @@ class CartService {
     async addCartItem(
         newCartItem: NewCartItem,
         userId: string
-    ): Promise<DefaultResponse<ICart | undefined>> {
+    ): Promise<DefaultResponse<ICartItem | undefined>> {
         const updatedCart = await CartRepository.addCartItem(newCartItem, userId);
         const productId = newCartItem.productId;
         if (updatedCart === null)

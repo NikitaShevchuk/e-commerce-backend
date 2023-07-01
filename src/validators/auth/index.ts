@@ -22,6 +22,7 @@ export const validators = {
             .custom(async (email) => {
                 const user = await AuthRepository.checkIfUserExistsByEmail(email);
                 if (user) throw new Error("User with this email already exists");
+                return true;
             });
     },
     email(): ValidationChain {

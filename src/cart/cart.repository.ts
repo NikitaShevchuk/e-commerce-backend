@@ -1,6 +1,6 @@
 import Product from "../models/Product";
 import User from "../models/User";
-import { type ICart } from "../models/types/user";
+import { type ICartItem, type ICart } from "../models/types/user";
 import type { NewCartItem } from "../models/methods/user";
 
 class CartRepository {
@@ -10,16 +10,13 @@ class CartRepository {
         else return { items: [] };
     }
 
-    async addCartItem(newCartItem: NewCartItem, userId: string): Promise<ICart | null> {
+    async addCartItem(newCartItem: NewCartItem, userId: string): Promise<ICartItem | null> {
         const user = await User.findById(userId);
         const existingProduct = await Product.findById(newCartItem.productId);
         if (existingProduct === null || user === null) return null;
 
-        await user.addToCart(newCartItem);
-        const updatedUser = await User.findById(userId).populate("cart.items.product");
-
-        if (updatedUser !== null) return updatedUser.cart;
-        else return updatedUser;
+        const addedCartItem = await user.addToCart(newCartItem);
+        return addedCartItem;
     }
 
     async removeOne(cartItemToRemove: NewCartItem, userId: string): Promise<ICart | null> {

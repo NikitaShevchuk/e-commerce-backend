@@ -17,6 +17,7 @@ class AuthRepository {
             cart: { items: [] },
             role: UserRoles.client
         });
+
         await user.save();
         void Mail.registration(user.email);
         return createSuccessAuthResult(user);
